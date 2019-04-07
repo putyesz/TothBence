@@ -8,11 +8,16 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    //Logger logger = new Logger("/log.txt");
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Parent gui_fxml = FXMLLoader.load(getClass().getResource("/gui.fxml"));
+
+        primaryStage.setTitle("Toth Bence's music player");
+        primaryStage.setScene(new Scene(gui_fxml));
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(400);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
