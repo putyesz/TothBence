@@ -54,7 +54,10 @@
                      </graphic></Button>
                   <Button fx:id="muteButt" alignment="CENTER" layoutX="180.0" layoutY="8.0" mnemonicParsing="false" textAlignment="CENTER" textOverrun="CLIP">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@muteButt.png" />
+                           </image></ImageView>
                      </graphic></Button>
                   <Slider fx:id="volSlider" blockIncrement="2.0" layoutX="226.0" layoutY="13.0" prefWidth="70.0" value="100.0" />
                </children>
