@@ -1,55 +1,61 @@
 package hu.unideb.inf;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 
-public class Controller {
-/*
-    final ImageView playImage = new ImageView((Element) new Image("/play.png"));
-    final ImageView prevImage = new ImageView((Element) new Image("/prev.png"));
-    final ImageView nextImage = new ImageView((Element) new Image("/next.png"));
-    Background s = new Background();
-*/
-    public Button prevButt;
-    public Button playButt;
-    public Button nextButt;
-    public Button muteButt;
-    public Slider volSlider;
 
-    protected void VolumeBarVisibility(){
+public class Controller {
+    @FXML public Button prevButt;
+    @FXML public Button playButt;
+    @FXML public Button nextButt;
+    @FXML public Button muteButt;
+    @FXML public Slider volSlider;
+
+    Logger logger = LoggerFactory.getLogger(Main.class);
+
+    @FXML protected void handlePrevButtonPressed(ActionEvent event){
         prevButt.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                logger.info("HEnlo");
                 //TODO
-                //visszalépés az előző számra
+                // visszalepes az elozo szamra
+                //prevButt.prevSong();
             }
         });
+    }
+
+    protected void VolumeBarVisibility(){
         nextButt.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 //TODO
-                //előrelépés akövetkező számra
+                // elorelepes a kovetkezo szamra
             }
         });
         playButt.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 //TODO
-                //elindítani a lejátszást, illetve a képet cserélni pause-ra
-                //valamint vissza
+                // elinditani a lejatszast, illetve a kepet cserelni
+                // pause-ra valamint vissza
             }
         });
-        muteButt.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        muteButt.setOnMouseClicked(new EventHandler <MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 //TODO
-                //némítás
+                // nemitas
             }
         });
         //TODO
-        // Hangerő = volSlider.getValue()
+        // Hangero = volSlider.getValue()
 
     }
 }

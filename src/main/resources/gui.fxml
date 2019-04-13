@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" hgap="10" minHeight="300.0" minWidth="300.0" prefHeight="600.0" prefWidth="800.0" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.Controller">
+<GridPane alignment="center" hgap="10" minHeight="300.0" minWidth="300.0" prefHeight="600.0" prefWidth="800.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.Controller">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="300.0" prefWidth="300.0" />
    </columnConstraints>
@@ -12,36 +24,38 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <MenuBar fx:id="menuBar" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="180.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2147483647" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
-        <menus>
-          <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
-            <items>
-                  <MenuItem mnemonicParsing="false" text="Add" />
-                  <MenuItem mnemonicParsing="false" text="Settings" />
-                  <MenuItem mnemonicParsing="false" text="Import" />
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
       <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="800.0">
          <children>
             <Pane fx:id="pane" layoutX="300.0" layoutY="386.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0">
                <children>
-                <Button fx:id="prevButt" alignment="CENTER" layoutX="36.0" layoutY="8.0" mnemonicParsing="false" text="Previous" textAlignment="CENTER" />
-                  <Button fx:id="playButt" layoutX="98.0" layoutY="1.0" maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="38.0" text="Play" textAlignment="CENTER" />
-                  <Button fx:id="nextButt" layoutX="137.0" layoutY="8.0" mnemonicParsing="false" text="Next" textAlignment="CENTER" />
-                  <Button fx:id="muteButt" alignment="CENTER" layoutX="180.0" layoutY="8.0" mnemonicParsing="false" text="Mute" textAlignment="CENTER" textOverrun="CLIP" />
+                <Button fx:id="prevButt" alignment="CENTER" layoutX="36.0" layoutY="8.0" mnemonicParsing="false" textAlignment="CENTER">
+                     <graphic>
+                        <ImageView fx:id="prevImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@prevButt.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="playButt" layoutX="98.0" layoutY="1.0" maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="38.0" text="Play" textAlignment="CENTER">
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@playButt.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="nextButt" layoutX="137.0" layoutY="8.0" mnemonicParsing="false" textAlignment="CENTER">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@nextButt.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="muteButt" alignment="CENTER" layoutX="180.0" layoutY="8.0" mnemonicParsing="false" textAlignment="CENTER" textOverrun="CLIP">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic></Button>
                   <Slider fx:id="volSlider" blockIncrement="2.0" layoutX="226.0" layoutY="13.0" prefWidth="70.0" value="100.0" />
                </children>
             </Pane>
@@ -96,5 +110,27 @@
             </TabPane>
          </children>
       </AnchorPane>
+      <MenuBar fx:id="menuBar" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="180.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2147483647" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+        <menus>
+          <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Add" />
+                  <MenuItem mnemonicParsing="false" text="Settings" />
+                  <MenuItem mnemonicParsing="false" text="Import" />
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
    </children>
 </GridPane>
