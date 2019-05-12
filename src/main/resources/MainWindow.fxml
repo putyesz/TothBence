@@ -5,7 +5,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="600.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="Controller.Controller">
+            fx:controller="Controller.MainController">
     <children>
         <TabPane layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                  prefHeight="500.0" prefWidth="230.0" tabClosingPolicy="UNAVAILABLE">
@@ -103,30 +103,30 @@
         <AnchorPane layoutY="520.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                     minWidth="-Infinity" prefHeight="80.0" prefWidth="600.0">
             <children>
-                <Button fx:id="play_button" defaultButton="true" layoutX="275.0" layoutY="25.0" maxHeight="-Infinity"
+                <Button fx:id="playButton" defaultButton="true" layoutX="275.0" layoutY="25.0" maxHeight="-Infinity"
                         maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
                         prefHeight="50.0" prefWidth="50.0" onAction="#StartPause">
                     <graphic>
-                        <ImageView fx:id="play_button_image" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true"
+                        <ImageView fx:id="playImageView" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
-                                <Image url="Images/playButt.png" fx:id="playImage"/>
+                                <Image url="Images/playButt.png"/>
                             </image>
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="prev_button" layoutX="240.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                <Button fx:id="prevButton" layoutX="240.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
                         minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0"
                         prefWidth="30.0" onAction="#PrevSong">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="Images/nextButt.png"/>
+                                <Image url="Images/prevButt.png"/>
                             </image>
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="next_button" layoutX="330.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                <Button fx:id="nextButton" layoutX="330.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
                         minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0"
                         prefWidth="30.0" onAction="#NextSong">
                     <graphic>
@@ -137,18 +137,18 @@
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="shuffle_button" layoutX="180.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                <Button fx:id="shuffleButton" layoutX="180.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
                         minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0"
                         prefWidth="20.0" onAction="#Shuffle">
                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView  fx:id="shuffleImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="Images/shuffle.png" fx:id="shuffleImage"/>
+                                <Image url="Images/shuffle.png"/>
                             </image>
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="stop_button" layoutX="210.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                <Button fx:id="stopButton" layoutX="210.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
                         minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0"
                         prefWidth="20.0" onAction="#StopSong">
                     <graphic>
@@ -159,47 +159,41 @@
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="mute_button" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="370.0"
+                <Button fx:id="muteButton" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="370.0"
                         layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                         minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0"
-                        onAction="#MuteDemute">
+                        onAction="#MuteUnmute">
                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="muteImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="Images/muteButt.png" fx:id="muteImage"/>
+                                <Image url="Images/muteButt.png"/>
                             </image>
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="loop_button" layoutX="150.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                <Button fx:id="loopButton" layoutX="150.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
                         minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0"
                         prefWidth="20.0" onAction="#Loop">
                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="loopImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="Images/loopButt.png" fx:id="loopImage"/>
+                                <Image url="Images/loopButt.png"/>
                             </image>
                         </ImageView>
                     </graphic>
                 </Button>
-                <Slider fx:id="play_slider" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                <Slider fx:id="playSlider" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                         minWidth="-Infinity" prefHeight="20.0" prefWidth="600.0"/>
                 <Slider fx:id="volumeSlider" layoutX="400.0" layoutY="40.0" value="100"/>
             </children>
         </AnchorPane>
-        <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0"
+        <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
                  prefWidth="600.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem fx:id="close_menuitem" mnemonicParsing="false" text="Close"/>
-                        <MenuItem fx:id="import_menuitem" mnemonicParsing="false" text="Import"/>
-                        <MenuItem fx:id="import_from" mnemonicParsing="false" text="Import..."/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete"/>
+                        <MenuItem fx:id="importMenuitem" onAction="#Import" mnemonicParsing="false" text="Import"/>
+                        <MenuItem fx:id="addPathMenuitem" onAction="#AddPathWindow" mnemonicParsing="false" text="Add path"/>
                     </items>
                 </Menu>
             </menus>
