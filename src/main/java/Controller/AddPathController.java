@@ -1,22 +1,27 @@
 package Controller;
 
+import Model.Song;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import org.slf4j.LoggerFactory;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class AddPathController {
 
@@ -26,39 +31,41 @@ public class AddPathController {
     public Button addButton;
     public Button editButton;
 
-    /*
-        private void Add(String filepath) throws ParserConfigurationException, TransformerException, IOException, URISyntaxException, SAXException {
-            //new File(getClass().getResource("/sourceFile/songLocations.xml").toString()
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = (Document) docBuilder.parse(new File(getClass().getResource("/sourceFile/songLocations.xml").toURI()));
-            Element prevSongs = doc.getDocumentElement();
+    //TODO
+    // Add method, to add String path to my database
 
-            Collection <Rootpackage.Model.Song> songs = new ArrayList <Rootpackage.Model.Song>();
-            songs.add(new Rootpackage.Model.Song());
 
-            for (Rootpackage.Model.Song song : songs){
-                Element newSongElement = doc.createElement("song");
+        private void Add(String filepath){
+            try {
+                //new File(getClass().getResource("/sourceFile/songLocations.xml").toString()
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+                Document doc = (Document) docBuilder.parse(new File(getClass().getResource("/Songs.xml").toString()));
+                Element prevSongs = doc.getDocumentElement();
 
-                Element URL = doc.createElement("URL");
-                URL.setAttribute("location", filepath);
-                newSongElement.appendChild(URL);
+                Collection <Song> songs = new ArrayList <Song>();
+                //songs.add(new Song());
 
-                prevSongs.appendChild(newSongElement);
+                for (Song song : songs) {
+                    Element location = doc.createElement("location");
 
+                    location.setAttribute("path", filepath);
+                }
+
+                DOMSource source = new DOMSource(doc);
+
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                StreamResult result = new StreamResult(new File(String.valueOf(getClass().getResource("/sourceFile/songLocations.xml"))));
+                transformer.transform(source, result);
+            } catch (IOException | ParserConfigurationException | SAXException | TransformerException e) {
+                System.out.println("Something went wrong");
+                e.printStackTrace();
             }
-
-            // write the content into xml file
-            DOMSource source = new DOMSource(doc);
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            StreamResult result = new StreamResult(new File(String.valueOf(getClass().getResource("/sourceFile/songLocations.xml"))));
-            transformer.transform(source, result);
         }
-    */
+
     @FXML
-    public void Browse(ActionEvent actionEvent) {
+    public void Browse() {
         Stage primaryStage = new Stage();
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Directory");
@@ -68,20 +75,43 @@ public class AddPathController {
     }
 
     @FXML
-    public void AddAction(ActionEvent actionEvent){
-        if (!"".equals(pathTextField.getText())) {
-            //TODO
-            // Add(pathTextField.getText());
+    public void AddAction(){
+        try {
+            if (!"".equals(pathTextField.getText())) {
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
+                Document document = documentBuilder.parse("Locations.xml");
+                document.getDocumentElement().normalize();
 
-        }
-        else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("No directory selected");
-            alert.showAndWait();
+                Element root = document.getDocumentElement();
+
+                Element newLocation = document.createElement("location");
+                newLocation.setAttribute("path", pathTextField.getText() );
+
+                root.appendChild(newLocation);
+
+                TransformerFactory tf = TransformerFactory.newInstance();
+                Transformer transformer = tf.newTransformer();
+                DOMSource source = new DOMSource(document);
+
+                StreamResult result = new StreamResult(new File("Locations.xml"));
+
+                transformer.transform(source, result);
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("No directory selected");
+                alert.showAndWait();
+            }
+        } catch (TransformerException | ParserConfigurationException | SAXException | IOException e) {
+            System.out.println("Something went wrong");
+            e.printStackTrace();
         }
     }
 
-    public void editAction(ActionEvent actionEvent) {
+    public void editAction() {
+        //TODO
+        // Show a list of available paths in a new window and maybe delete lines
 
     }
 }

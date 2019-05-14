@@ -10,7 +10,8 @@ import java.io.IOException;
 public class AddPathWindow {
 
     public AddPathWindow() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/AddPathWindow.fxml"));
+        FXMLLoader fl = new FXMLLoader(getClass().getResource("/AddPathWindow.fxml"));
+        Parent root = fl.load();
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Add Path");
         primaryStage.setResizable(false);

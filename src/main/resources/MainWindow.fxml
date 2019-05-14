@@ -18,11 +18,11 @@
                                 <ListView fx:id="yearList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
                                           prefWidth="220.0"/>
+                                <ChoiceBox fx:id="yearChoiceBox" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0"/>
                                 <Button fx:id="search_year_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
                                         maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" text="Search"/>
-                                <ChoiceBox layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                           minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0"/>
+                                        mnemonicParsing="false" text="Search" onAction="#SearchYear"/>
                             </children>
                         </AnchorPane>
                     </content>
@@ -32,14 +32,14 @@
                         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                                     minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
                             <children>
-                                <TextField layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                <TextField fx:id="artistTextField" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                            minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0"/>
                                 <ListView fx:id="artistList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
                                           prefWidth="220.0"/>
                                 <Button fx:id="search_artist_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
                                         maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" text="Search"/>
+                                        mnemonicParsing="false" text="Search" onAction="#SearchArtist"/>
                             </children>
                         </AnchorPane>
                     </content>
@@ -49,14 +49,14 @@
                         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                                     minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
                             <children>
-                                <TextField layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                <TextField fx:id="albumTextField" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                            minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0"/>
                                 <ListView fx:id="albumList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
                                           prefWidth="220.0"/>
                                 <Button fx:id="search_album_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
                                         maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" text="Search"/>
+                                        mnemonicParsing="false" text="Search" onAction="#SearchAlbum"/>
                             </children>
                         </AnchorPane>
                     </content>
@@ -66,14 +66,14 @@
                         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                                     minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
                             <children>
+                                <TextField fx:id="songTextField" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0"/>
                                 <ListView fx:id="songList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
                                           prefWidth="220.0"/>
                                 <Button fx:id="search_song_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
                                         maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" text="Search"/>
-                                <TextField layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                           minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0"/>
+                                        mnemonicParsing="false" text="Search" onAction="#SearchSong"/>
                             </children>
                         </AnchorPane>
                     </content>
@@ -83,14 +83,14 @@
                         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                                     minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
                             <children>
-                                <ChoiceBox layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                <ChoiceBox fx:id="genreChoiceBox" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                            minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0"/>
                                 <ListView fx:id="genreList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
                                           prefWidth="220.0"/>
                                 <Button fx:id="search_genre_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
                                         maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" text="Search"/>
+                                        mnemonicParsing="false" text="Search" onAction="#SearchGenre"/>
                             </children>
                         </AnchorPane>
                     </content>
