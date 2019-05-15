@@ -114,12 +114,12 @@
             </tabs>
         </TabPane>
         <ListView fx:id="playlistList" layoutX="220.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                  minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL"
-                  prefHeight="500.0" prefWidth="380.0"/>
+                  minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT"
+                  prefHeight="500.0" prefWidth="380.0" onMouseClicked="#DoubleClick"/>
         <AnchorPane layoutY="520.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                     minWidth="-Infinity" prefHeight="80.0" prefWidth="600.0">
             <children>
-                <Button fx:id="addButton" defaultButton="true" layoutX="20.0" layoutY="30.0" maxHeight="-Infinity"
+                <Button defaultButton="true" layoutX="20.0" layoutY="30.0" maxHeight="-Infinity"
                         maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
                         onAction="#addToPlaylist" prefHeight="26.0" prefWidth="40.0" text="Add"/>
                 <Button fx:id="playButton" defaultButton="true" layoutX="275.0" layoutY="25.0" maxHeight="-Infinity"
@@ -187,7 +187,7 @@
                         <ImageView fx:id="muteImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
-                                <Image url="Images/muteButt.png"/>
+                                <Image url="Images/unmuteButt.png"/>
                             </image>
                         </ImageView>
                     </graphic>
@@ -205,8 +205,8 @@
                     </graphic>
                 </Button>
                 <Slider fx:id="playSlider" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                        minWidth="-Infinity" prefHeight="20.0" prefWidth="600.0"/>
-                <Slider fx:id="volumeSlider" layoutX="400.0" layoutY="40.0" value="100"/>
+                        minWidth="-Infinity" prefHeight="20.0" prefWidth="600.0"  max="1" onMouseClicked="#playSliderEvent"/>
+                <Slider fx:id="volumeSlider" layoutX="400.0" layoutY="40.0" value="1"  max="1" onMouseClicked="#volumeSliderEvent"/>
             </children>
         </AnchorPane>
         <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"

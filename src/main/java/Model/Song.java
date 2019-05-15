@@ -61,13 +61,44 @@ public class Song {
             parser.parse(input, handler, metadata, parseCtx);
             input.close();
 
-            this.setPath(file.getAbsolutePath());
-            this.setArtist(metadata.get("xmpDM:artist"));
-            this.setAlbum(metadata.get("xmpDM:album"));
-            this.setTitle(metadata.get("title"));
-            this.setYear(metadata.get("xmpDM:releaseDate"));
+            this.setPath(file.getAbsolutePath().replace("\\", "/").replace(" ", "%20"));
+
+            if (metadata.get("xmpDM:artist") != null) {
+                this.setArtist(metadata.get("xmpDM:artist"));
+            }
+            else{
+                this.setArtist("Unknown");
+            }
+
+            if (metadata.get("xmpDM:album") != null) {
+                this.setAlbum(metadata.get("xmpDM:album"));
+            }
+            else{
+                this.setAlbum("Unknown");
+            }
+
+            if (metadata.get("title") != null) {
+                this.setTitle(metadata.get("title"));
+            }
+            else{
+                this.setTitle(file.getName());
+            }
+
+            if (metadata.get("xmpDM:releaseDate") != null) {
+                this.setYear(metadata.get("xmpDM:releaseDate"));
+            }
+            else{
+                this.setTitle("Unknown");
+            }
+
             this.setLenghtInSecs(metadata.get("xmpDM:duration"));
-            this.setGenre(metadata.get("xmpDM:genre"));
+
+            if (metadata.get("xmpDM:genre") != null) {
+                this.setGenre(metadata.get("xmpDM:genre"));
+            }
+            else{
+                this.setTitle("Unknown");
+            }
         } catch (SAXException | TikaException | IOException e) {
             e.printStackTrace();
         }

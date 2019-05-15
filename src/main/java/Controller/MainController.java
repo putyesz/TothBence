@@ -8,14 +8,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.input.MouseEvent;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.parser.mp3.Mp3Parser;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -23,17 +24,22 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.lang.Math.abs;
 
 public class MainController {
 
@@ -81,6 +87,8 @@ public class MainController {
 
     private ArrayList <Song> allSongsList;
 
+    private int index = 0;
+
     private boolean isPaused;
     private boolean isMuted;
     private boolean isOnShuffle;
@@ -102,6 +110,13 @@ public class MainController {
         yearChoiceBox = new ChoiceBox <>();
         genreChoiceBox = new ChoiceBox <>();
         songHashMap = new HashMap <>();
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                updateSlider();
+            }
+        }, 0, 2000);
 
         try {
             makeXMLFiles();
@@ -141,6 +156,10 @@ public class MainController {
 
                         Element songElement = doc.createElement("song");
                         root.appendChild(songElement);
+
+                        Element pathElement = doc.createElement("path");
+                        pathElement.appendChild(doc.createTextNode(file.getAbsolutePath().replace("\\", "/")));
+                        songElement.appendChild(pathElement);
 
                         Element yearElement = doc.createElement("year");
                         yearElement.appendChild(doc.createTextNode(getMetas(file.getAbsolutePath(), "year")));
@@ -192,6 +211,165 @@ public class MainController {
         songList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         genreList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+        initChoiceBoxes();
+    }
+
+    @FXML
+    private void startPause() {
+        if (playlistList.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("No song in the playlist");
+            alert.showAndWait();
+            return;
+        }
+
+        if (!MediaModel.isSet()) {
+            if (playlistList.getSelectionModel().getSelectedItems().isEmpty()) {
+                MediaModel.setMusic(songHashMap.get(playlistList.getItems().get(index)).getPath());
+            } else {
+
+                MediaModel.setMusic(songHashMap.get(playlistList.getSelectionModel().getSelectedItems().get(index)).getPath());
+            }
+        } else {
+            MediaModel.playPause();
+        }
+        playImageChanger();
+    }
+
+    @FXML
+    private void prevSong() {
+        index--;
+        changeSong();
+        System.out.println("Prev");
+    }
+
+    @FXML
+    private void nextSong() {
+        index++;
+        changeSong();
+        System.out.println("Next");
+    }
+
+    @FXML
+    private void stopSong() {
+        MediaModel.stopSong();
+        playSlider.setValue(0);
+        playImageChanger();
+        System.out.println("Stop");
+    }
+
+    @FXML
+    private void muteUnmute() {
+        muteImageChanger();
+        MediaModel.mute();
+    }
+
+    @FXML
+    private void shuffle() {
+        isOnShuffle = !isOnShuffle;
+        if (isOnShuffle) {
+            shuffleImageView.setImage(new Image("./Images/shuffleOn.png"));
+            System.out.println("On shuffle");
+        } else {
+            shuffleImageView.setImage(new Image("./Images/shuffle.png"));
+            System.out.println("Not on shuffle");
+        }
+    }
+
+    @FXML
+    private void loop() {
+        //TODO
+        // loop whole playList,
+        // so last element -> first element
+        // (maybe) second click just the actual song will be looped
+
+        isLooped = !isLooped;
+        if (isLooped) {
+            loopImageView.setImage(new Image("./Images/loopButtOn.png"));
+            System.out.println("Looped");
+        } else {
+            loopImageView.setImage(new Image("./Images/loopButt.png"));
+            System.out.println("Not looped");
+        }
+    }
+
+    @FXML
+    private void addPathWindow() throws IOException {
+        new AddPathWindow();
+    }
+
+    @FXML
+    private void Import() {
+        initChoiceBoxes();
+    }
+
+    @FXML
+    private void searchYear() {
+        yearList.setItems(FXCollections.observableArrayList(allSongsList.stream()
+                .filter(song -> song.getYear().equals(yearChoiceBox.getValue()))
+                .map(song -> song.getArtist() + " - " + song.getTitle())
+                .collect(Collectors.toList())));
+    }
+
+    @FXML
+    private void searchArtist() {
+        artistList.setItems(FXCollections.observableArrayList(allSongsList.stream()
+                .filter(song -> song.getArtist().toLowerCase().contains(artistTextField.getText().toLowerCase()))
+                .map(song -> song.getArtist() + " - " + song.getTitle())
+                .collect(Collectors.toList())));
+    }
+
+    @FXML
+    private void searchAlbum() {
+        albumList.setItems(FXCollections.observableArrayList(allSongsList.stream()
+                .filter(song -> song.getAlbum().toLowerCase().contains(artistTextField.getText().toLowerCase()))
+                .map(song -> song.getArtist() + " - " + song.getTitle())
+                .collect(Collectors.toList())));
+    }
+
+    @FXML
+    private void searchSong() {
+        songList.setItems(FXCollections.observableArrayList(allSongsList.stream()
+                .filter(song -> song.getTitle().toLowerCase().contains(artistTextField.getText().toLowerCase()))
+                .map(song -> song.getArtist() + " - " + song.getTitle())
+                .collect(Collectors.toList())));
+    }
+
+    @FXML
+    private void searchGenre() {
+        genreList.setItems(FXCollections.observableArrayList(allSongsList.stream()
+                .filter(song -> song.getGenre().equals(genreChoiceBox.getValue()))
+                .map(song -> song.getArtist() + " - " + song.getTitle())
+                .collect(Collectors.toList())));
+    }
+
+    @FXML
+    private void addToPlaylist() {
+        switch (tabPane.getSelectionModel().getSelectedItem().getText()) {
+            case "Year":
+                playlistList.getItems().addAll(yearList.getSelectionModel().getSelectedItems());
+            case "Artist":
+                playlistList.getItems().addAll(artistList.getSelectionModel().getSelectedItems());
+            case "Album":
+                playlistList.getItems().addAll(albumList.getSelectionModel().getSelectedItems());
+            case "Song":
+                playlistList.getItems().addAll(songList.getSelectionModel().getSelectedItems());
+            case "Genre":
+                playlistList.getItems().addAll(genreList.getSelectionModel().getSelectedItems());
+        }
+        playlistList.refresh();
+    }
+
+    @FXML
+    public void volumeSliderEvent() {
+        setVolume(volumeSlider.getValue());
+    }
+    @FXML
+    public void playSliderEvent() {
+        MediaModel.setSeek(playSlider.getValue());
+    }
+
+    private void initChoiceBoxes(){
         yearChoiceBox.setItems(FXCollections.observableArrayList(allSongsList.stream()
                 .map(Song::getYear)
                 .distinct()
@@ -200,6 +378,12 @@ public class MainController {
                 .map(Song::getGenre)
                 .distinct()
                 .collect(Collectors.toList())));
+    }
+
+    private void updateSlider(){
+        if(MediaModel.isSet()){
+            playSlider.setValue(MediaModel.getSeek());
+        }
     }
 
     private String getMetas(String fileLocation, String neededMeta) throws IOException, TikaException, SAXException {
@@ -267,193 +451,55 @@ public class MainController {
         }
     }
 
-    @FXML
-    private void startPause() {
-        //TODO
-        // if no selected item in playlist
-        // automatically play first song
-        // else first element must be played
-
-        MediaModel.playPause();
-
-
-        if (playlistList.getItems().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("No song in the playlist");
-            alert.showAndWait();
-            return;
-        }
-
-        Media media;
-        MediaPlayer mediaPlayer;
-
-        if (playlistList.getSelectionModel().getSelectedItem().isEmpty()) {
-            media = new Media(playlistList.getItems().get(0));
-            mediaPlayer = new MediaPlayer(media);
-        } else {
-            media = new Media(playlistList.getSelectionModel().getSelectedItem());
-            mediaPlayer = new MediaPlayer(media);
-        }
-
-
-        isPaused = !isPaused;
-        if (isPaused) {
-            playImageView.setImage(new Image("./Images/playButt.png"));
-            mediaPlayer.play();
-            System.out.println("Start");
-        } else {
-            playImageView.setImage(new Image("./Images/pauseButt.png"));
-            mediaPlayer.pause();
-            System.out.println("Pause");
-        }
-    }
-
-    @FXML
-    private void prevSong() {
-        System.out.println("Prev");
-        //TODO
-        // don't throw Exception or error, if first song in the list
-        // else play the previous element in the playList
-
-    }
-
-    @FXML
-    private void nextSong() {
-        System.out.println("Next");
-        //TODO
-        // don't throw Exception or error, if last song in the list
-        // else play the next element in the playList
-
-    }
-
-    @FXML
-    private void stopSong() {
-        playSlider.adjustValue(0);
-        MediaPlayer mp = new MediaPlayer(new Media(""));
-        mp.stop();
-        System.out.println("Stop");
-    }
-
-    @FXML
-    private void muteUnmute() {
-        //TODO
-        // simply mute or unmute volume
-
+    private void muteImageChanger() {
         isMuted = !isMuted;
         if (isMuted) {
-            muteImageView.setImage(new Image("./Images/unmuteButt.png"));
+            muteImageView.setImage(new Image("./Images/muteButt.png"));
             volumeSliderValue = volumeSlider.getValue();
             volumeSlider.adjustValue(0);
+            setVolume(0);
             System.out.println("Muted");
         } else {
-            muteImageView.setImage(new Image("./Images/muteButt.png"));
+            muteImageView.setImage(new Image("./Images/unmuteButt.png"));
             volumeSlider.adjustValue(volumeSliderValue);
+            setVolume(volumeSliderValue);
             System.out.println("Unmuted");
         }
     }
 
-    @FXML
-    private void shuffle() {
-        //TODO
-        // shuffle playList
-
-        isOnShuffle = !isOnShuffle;
-        if (isOnShuffle) {
-            shuffleImageView.setImage(new Image("./Images/shuffleOn.png"));
-            System.out.println("On shuffle");
+    private void playImageChanger() {
+        isPaused = !isPaused;
+        if (!isPaused) {
+            playImageView.setImage(new Image("./Images/pauseButt.png"));
+            System.out.println("Start");
         } else {
-            shuffleImageView.setImage(new Image("./Images/shuffle.png"));
-            System.out.println("Not on shuffle");
+            playImageView.setImage(new Image("./Images/playButt.png"));
+            System.out.println("Pause");
         }
     }
 
-    @FXML
-    private void loop() {
-        //TODO
-        // loop whole playList,
-        // so last element -> first element
-        // maybe second click just the actual song will be looped
+    private void changeSong(){
+        if(index < 0){
+            index = playlistList.getItems().size() - 1;
+        }
+        index %= playlistList.getItems().size();
+        MediaModel.setMusic(songHashMap.get(playlistList.getItems().get(index)).getPath());
+        playlistList.getSelectionModel().select(index);
+    }
 
-        isLooped = !isLooped;
-        if (isLooped) {
-            loopImageView.setImage(new Image("./Images/loopButtOn.png"));
-            System.out.println("Looped");
-        } else {
-            loopImageView.setImage(new Image("./Images/loopButt.png"));
-            System.out.println("Not looped");
+    public void DoubleClick(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2) {
+            startMusic();
         }
     }
 
-    @FXML
-    public void addPathWindow() throws IOException {
-        new AddPathWindow();
+    private void startMusic() {
+        String s = playlistList.getSelectionModel().getSelectedItem();
+        MediaModel.setMusic(songHashMap.get(s).getPath());
+        playImageChanger();
     }
 
-    @FXML
-    public void Import() {
-        yearList.refresh();
-        artistList.refresh();
-        albumList.refresh();
-        songList.refresh();
-        genreList.refresh();
-        initialize();
-
-        initSongs();
-    }
-
-    @FXML
-    public void searchYear() {
-        yearList.setItems(FXCollections.observableArrayList(allSongsList.stream()
-                .filter(song -> song.getYear().equals(yearChoiceBox.getValue()))
-                .map(song -> song.getArtist() + " - " + song.getTitle())
-                .collect(Collectors.toList())));
-    }
-
-    @FXML
-    public void searchArtist() {
-        artistList.setItems(FXCollections.observableArrayList(allSongsList.stream()
-                .filter(song -> song.getArtist().toLowerCase().contains(artistTextField.getText().toLowerCase()))
-                .map(song -> song.getArtist() + " - " + song.getTitle())
-                .collect(Collectors.toList())));
-    }
-
-    @FXML
-    public void searchSong() {
-        songList.setItems(FXCollections.observableArrayList(allSongsList.stream()
-                .filter(song -> song.getTitle().toLowerCase().contains(artistTextField.getText().toLowerCase()))
-                .map(song -> song.getArtist() + " - " + song.getTitle())
-                .collect(Collectors.toList())));
-    }
-
-    @FXML
-    public void searchGenre() {
-        genreList.setItems(FXCollections.observableArrayList(allSongsList.stream()
-                .filter(song -> song.getGenre().equals(genreChoiceBox.getValue()))
-                .map(song -> song.getArtist() + " - " + song.getTitle())
-                .collect(Collectors.toList())));
-    }
-
-    @FXML
-    public void searchAlbum() {
-        albumList.setItems(FXCollections.observableArrayList(allSongsList.stream()
-                .filter(song -> song.getAlbum().toLowerCase().contains(artistTextField.getText().toLowerCase()))
-                .map(song -> song.getArtist() + " - " + song.getTitle())
-                .collect(Collectors.toList())));
-    }
-
-    public void addToPlaylist() {
-        switch(tabPane.getSelectionModel().getSelectedItem().getText()){
-            case "Year":
-                playlistList.getItems().addAll(yearList.getSelectionModel().getSelectedItems());
-            case "Artist":
-                playlistList.getItems().addAll(artistList.getSelectionModel().getSelectedItems());
-            case "Album":
-                playlistList.getItems().addAll(albumList.getSelectionModel().getSelectedItems());
-            case "Song":
-                playlistList.getItems().addAll(songList.getSelectionModel().getSelectedItems());
-            case "Genre":
-                playlistList.getItems().addAll(genreList.getSelectionModel().getSelectedItems());
-        }
-        playlistList.refresh();
+    private void setVolume(double d) {
+        MediaModel.setVolume(d);
     }
 }
