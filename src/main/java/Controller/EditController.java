@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -22,11 +23,24 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Controller for Editing available locations.
+ */
 public class EditController {
 
+    /**
+     * Listview to show locations.
+     */
     public ListView <String> locationsList;
+    /**
+     * Button to delete item from locations list.
+     */
     public Button deleteButton;
 
+    /**
+     * Initializer method to read locations.
+     * Pass it to a ListView element.
+     */
     @FXML
     private void initialize() {
         try {
@@ -45,12 +59,24 @@ public class EditController {
             }
 
             locationsList.setItems(observableList);
+            LoggerFactory.getLogger(EditController.class).info("Initialized EditWindow");
 
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+        } catch (ParserConfigurationException e) {
+            LoggerFactory.getLogger(EditController.class).error("ParserConfigurationException");
+            e.printStackTrace();
+        } catch (IOException e) {
+            LoggerFactory.getLogger(EditController.class).error("IOException");
+            e.printStackTrace();
+        } catch (SAXException e) {
+            LoggerFactory.getLogger(EditController.class).error("SAXException");
             e.printStackTrace();
         }
     }
 
+    /**
+     * Delete method for delete button, to remove the selected location from the list.
+     */
+    @FXML
     public void delete() {
         try {
             File inputFile = new File("Locations.xml");
@@ -82,8 +108,19 @@ public class EditController {
             StreamResult result = new StreamResult(new File("Locations.xml"));
 
             transformer.transform(source, result);
+            LoggerFactory.getLogger(EditController.class).info("Item deleted");
 
-        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
+        } catch (ParserConfigurationException e) {
+            LoggerFactory.getLogger(EditController.class).error("ParserConfigurationException");
+            e.printStackTrace();
+        } catch (IOException e) {
+            LoggerFactory.getLogger(EditController.class).error("IOException");
+            e.printStackTrace();
+        } catch (SAXException e) {
+            LoggerFactory.getLogger(EditController.class).error("SAXException");
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            LoggerFactory.getLogger(EditController.class).error("TransformerException");
             e.printStackTrace();
         }
 

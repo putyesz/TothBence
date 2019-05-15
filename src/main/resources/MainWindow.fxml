@@ -17,209 +17,166 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Controller.MainController">
-    <children>
-        <TabPane fx:id="tabPane" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                 minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0" tabClosingPolicy="UNAVAILABLE">
-            <tabs>
-                <Tab text="Year">
-                    <content>
-                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                                    minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
-                            <children>
-                                <ListView fx:id="yearList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
-                                          prefWidth="220.0"/>
-                                <ChoiceBox fx:id="yearChoiceBox" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
-                                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                           prefWidth="150.0"/>
-                                <Button fx:id="search_year_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
-                                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" onAction="#searchYear" text="Search"/>
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </Tab>
-                <Tab text="Artist">
-                    <content>
-                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                                    minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
-                            <children>
-                                <TextField fx:id="artistTextField" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
-                                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                           prefWidth="150.0"/>
-                                <ListView fx:id="artistList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
-                                          prefWidth="220.0"/>
-                                <Button fx:id="search_artist_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
-                                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" onAction="#searchArtist" text="Search"/>
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </Tab>
-                <Tab text="Album">
-                    <content>
-                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                                    minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
-                            <children>
-                                <TextField fx:id="albumTextField" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
-                                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                           prefWidth="150.0"/>
-                                <ListView fx:id="albumList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
-                                          prefWidth="220.0"/>
-                                <Button fx:id="search_album_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
-                                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" onAction="#searchAlbum" text="Search"/>
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </Tab>
-                <Tab text="Song">
-                    <content>
-                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                                    minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
-                            <children>
-                                <TextField fx:id="songTextField" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
-                                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                           prefWidth="150.0"/>
-                                <ListView fx:id="songList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
-                                          prefWidth="220.0"/>
-                                <Button fx:id="search_song_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
-                                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" onAction="#searchSong" text="Search"/>
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </Tab>
-                <Tab text="Genre">
-                    <content>
-                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                                    minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
-                            <children>
-                                <ChoiceBox fx:id="genreChoiceBox" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
-                                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                           prefWidth="150.0"/>
-                                <ListView fx:id="genreList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
-                                          prefWidth="220.0"/>
-                                <Button fx:id="search_genre_button" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
-                                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                                        mnemonicParsing="false" onAction="#searchGenre" text="Search"/>
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </Tab>
-            </tabs>
-        </TabPane>
-        <ListView fx:id="playlistList" layoutX="220.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                  minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT"
-                  prefHeight="500.0" prefWidth="380.0" onMouseClicked="#DoubleClick"/>
-        <AnchorPane layoutY="520.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="80.0" prefWidth="600.0">
-            <children>
-                <Button defaultButton="true" layoutX="20.0" layoutY="30.0" maxHeight="-Infinity"
-                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-                        onAction="#addToPlaylist" prefHeight="26.0" prefWidth="40.0" text="Add"/>
-                <Button fx:id="playButton" defaultButton="true" layoutX="275.0" layoutY="25.0" maxHeight="-Infinity"
-                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-                        onAction="#startPause" prefHeight="50.0" prefWidth="50.0">
-                    <graphic>
-                        <ImageView fx:id="playImageView" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true"
-                                   preserveRatio="true">
-                            <image>
-                                <Image url="Images/playButt.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button fx:id="prevButton" layoutX="240.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                        minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#prevSong"
-                        prefHeight="30.0" prefWidth="30.0">
-                    <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="Images/prevButt.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button fx:id="nextButton" layoutX="330.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                        minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextSong"
-                        prefHeight="30.0" prefWidth="30.0">
-                    <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="Images/nextButt.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button fx:id="shuffleButton" layoutX="180.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                        minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#shuffle"
-                        prefHeight="20.0" prefWidth="20.0">
-                    <graphic>
-                        <ImageView fx:id="shuffleImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
-                                   preserveRatio="true">
-                            <image>
-                                <Image url="Images/shuffle.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button fx:id="stopButton" layoutX="210.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                        minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#stopSong"
-                        prefHeight="20.0" prefWidth="20.0">
-                    <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="Images/stopButt.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button fx:id="muteButton" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="370.0"
-                        layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                        minWidth="-Infinity" mnemonicParsing="false" onAction="#muteUnmute" prefHeight="20.0"
-                        prefWidth="20.0">
-                    <graphic>
-                        <ImageView fx:id="muteImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
-                                   preserveRatio="true">
-                            <image>
-                                <Image url="Images/unmuteButt.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button fx:id="loopButton" layoutX="150.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                        minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loop"
-                        prefHeight="20.0" prefWidth="20.0">
-                    <graphic>
-                        <ImageView fx:id="loopImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
-                                   preserveRatio="true">
-                            <image>
-                                <Image url="Images/loopButt.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Slider fx:id="playSlider" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                        minWidth="-Infinity" prefHeight="20.0" prefWidth="600.0"  max="1" onMouseClicked="#playSliderEvent"/>
-                <Slider fx:id="volumeSlider" layoutX="400.0" layoutY="40.0" value="1"  max="1" onMouseClicked="#volumeSliderEvent"/>
-            </children>
-        </AnchorPane>
-        <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
-                 prefWidth="600.0">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem fx:id="importMenuitem" mnemonicParsing="false" onAction="#Import" text="Import"/>
-                        <MenuItem fx:id="addPathMenuitem" mnemonicParsing="false" onAction="#addPathWindow"
-                                  text="Add path"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-    </children>
+    <TabPane fx:id="tabPane" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+             minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0" tabClosingPolicy="UNAVAILABLE">
+        <Tab text="Year">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                        minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
+                <ListView fx:id="yearList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
+                          prefWidth="220.0"/>
+                <ChoiceBox fx:id="yearChoiceBox" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
+                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                           prefWidth="150.0"/>
+                <Button fx:id="searchYearButton" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
+                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                        mnemonicParsing="false" onAction="#searchYear" text="Search"/>
+            </AnchorPane>
+        </Tab>
+        <Tab text="Artist">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                        minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
+                <TextField fx:id="artistTextField" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
+                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                           prefWidth="150.0"/>
+                <ListView fx:id="artistList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
+                          prefWidth="220.0"/>
+                <Button fx:id="searchArtistButton" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
+                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                        mnemonicParsing="false" onAction="#searchArtist" text="Search"/>
+            </AnchorPane>
+        </Tab>
+        <Tab text="Album">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                        minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
+                <TextField fx:id="albumTextField" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
+                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                           prefWidth="150.0"/>
+                <ListView fx:id="albumList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
+                          prefWidth="220.0"/>
+                <Button fx:id="searchAlbumButton" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
+                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                        mnemonicParsing="false" onAction="#searchAlbum" text="Search"/>
+            </AnchorPane>
+        </Tab>
+        <Tab text="Song">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                        minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
+                <TextField fx:id="songTextField" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
+                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                           prefWidth="150.0"/>
+                <ListView fx:id="songList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
+                          prefWidth="220.0"/>
+                <Button fx:id="searchSongButton" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
+                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                        mnemonicParsing="false" onAction="#searchSong" text="Search"/>
+            </AnchorPane>
+        </Tab>
+        <Tab text="Genre">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                        minWidth="-Infinity" prefHeight="500.0" prefWidth="230.0">
+                <ChoiceBox fx:id="genreChoiceBox" layoutX="8.0" layoutY="2.0" maxHeight="-Infinity"
+                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                           prefWidth="150.0"/>
+                <ListView fx:id="genreList" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0"
+                          prefWidth="220.0"/>
+                <Button fx:id="searchGenreButton" layoutX="165.0" layoutY="3.0" maxHeight="-Infinity"
+                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                        mnemonicParsing="false" onAction="#searchGenre" text="Search"/>
+            </AnchorPane>
+        </Tab>
+    </TabPane>
+    <ListView fx:id="playlistList" layoutX="220.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity"
+              minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT"
+              prefHeight="500.0" prefWidth="380.0" onMouseClicked="#DoubleClick"/>
+    <AnchorPane layoutY="520.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                minWidth="-Infinity" prefHeight="80.0" prefWidth="600.0">
+        <Button defaultButton="true" layoutX="20.0" layoutY="30.0" maxHeight="-Infinity"
+                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
+                onAction="#addToPlaylist" prefHeight="26.0" prefWidth="40.0" text="Add"/>
+        <Button fx:id="playButton" defaultButton="true" layoutX="275.0" layoutY="25.0" maxHeight="-Infinity"
+                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
+                onAction="#startPause" prefHeight="50.0" prefWidth="50.0">
+            <graphic>
+                <ImageView fx:id="playImageView" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <Image url="Images/playButt.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="prevButton" layoutX="240.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#prevSong"
+                prefHeight="30.0" prefWidth="30.0">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="Images/prevButt.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="nextButton" layoutX="330.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextSong"
+                prefHeight="30.0" prefWidth="30.0">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="Images/nextButt.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="shuffleButton" layoutX="180.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#shuffle"
+                prefHeight="20.0" prefWidth="20.0">
+            <graphic>
+                <ImageView fx:id="shuffleImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <Image url="Images/shuffle.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="stopButton" layoutX="210.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#stopSong"
+                prefHeight="20.0" prefWidth="20.0">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="Images/stopButt.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="muteButton" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="370.0"
+                layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                minWidth="-Infinity" mnemonicParsing="false" onAction="#muteUnmute" prefHeight="20.0"
+                prefWidth="20.0">
+            <graphic>
+                <ImageView fx:id="muteImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <Image url="Images/unmuteButt.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="loopButton" layoutX="150.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loop"
+                prefHeight="20.0" prefWidth="20.0">
+            <graphic>
+                <ImageView fx:id="loopImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <Image url="Images/loopButt.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Slider fx:id="playSlider" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                minWidth="-Infinity" prefHeight="20.0" prefWidth="600.0" max="1" onMouseClicked="#playSliderEvent"/>
+        <Slider fx:id="volumeSlider" layoutX="400.0" layoutY="40.0" value="1" max="1"
+                onMouseClicked="#volumeSliderEvent"/>
+    </AnchorPane>
+    <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
+             prefWidth="600.0">
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem fx:id="importMenuitem" mnemonicParsing="false" onAction="#Import" text="Import"/>
+            <MenuItem fx:id="addPathMenuitem" mnemonicParsing="false" onAction="#addPathWindow"
+                      text="Add path"/>
+        </Menu>
+    </MenuBar>
 </AnchorPane>
