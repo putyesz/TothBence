@@ -9,9 +9,17 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Song {
+    /**
+     * Absolute path to song
+     */
+    private String path;
+
     /**
      * Name of the performer
      */
@@ -53,6 +61,7 @@ public class Song {
             parser.parse(input, handler, metadata, parseCtx);
             input.close();
 
+            this.setPath(file.getAbsolutePath());
             this.setArtist(metadata.get("xmpDM:artist"));
             this.setAlbum(metadata.get("xmpDM:album"));
             this.setTitle(metadata.get("title"));
@@ -62,6 +71,14 @@ public class Song {
         } catch (SAXException | TikaException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    private void setPath(String path) {
+        this.path = path;
     }
 
     public String getArtist() {
@@ -111,4 +128,5 @@ public class Song {
     private void setGenre(String genre) {
         this.genre = genre;
     }
+
 }
