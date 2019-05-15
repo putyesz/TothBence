@@ -77,32 +77,14 @@
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
                 </configuration>
-                <!--reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>checkstyle</report>
-                        </reports>
-                    </reportSet>
-                </reportSets-->
             </plugin>
 
             <!--Jacoco plugin, Egységtesztekhez-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <!--reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets-->
+                <version>0.8.4</version>
             </plugin>
-            <!--plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin-->
 
         </plugins>
     </reporting>
@@ -362,5 +344,11 @@
         <version>2.11.2</version>
         <scope>runtime</scope>
     </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.4.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
