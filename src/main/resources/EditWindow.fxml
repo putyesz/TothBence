@@ -6,9 +6,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0"
             prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Controller.EditController">
+            fx:controller="controller.EditController">
     <ListView fx:id="locationsList" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity"
-              minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="400.0" orientation="VERTICAL"/>
+              minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="400.0"/>
     <Button fx:id="deleteButton" layoutX="430.0" layoutY="25.0" mnemonicParsing="false" onAction="#delete"
             text="Delete"/>
 </AnchorPane>

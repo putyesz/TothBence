@@ -3,14 +3,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>hu.unideb.inf</groupId>
     <artifactId>TothBence</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
     <description>Music player for Java, created by Bence Toth</description>
-
     <developers>
         <developer>
             <name>Bence Tóth</name>
@@ -20,26 +17,21 @@
             </roles>
         </developer>
     </developers>
-
-    <!--Githubos tároló-->
     <scm>
         <url>https://github.com/putyesz/TothBence</url>
         <connection>scm:git:git://https://github.com/putyesz/TothBence.git</connection>
         <developerConnection>scm:git:git@github.com:putyesz/TothBence.git</developerConnection>
     </scm>
-
     <licenses>
         <license>
             <name>GNU General Public License v3.0</name>
             <url>http://www.gnu.org/copyleft/gpl.html</url>
         </license>
     </licenses>
-
     <inceptionYear>2019</inceptionYear>
     <organization>
         <name>hu.unideb.inf</name>
     </organization>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
@@ -48,7 +40,6 @@
         <dependency.locations.enabled>false</dependency.locations.enabled>
         <exec.mainClass>Main</exec.mainClass>
     </properties>
-
     <reporting>
         <plugins>
             <plugin>
@@ -66,29 +57,18 @@
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
-
-            
-
-            <!--Checkstyle plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.0.0</version>
-                <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
-                </configuration>
             </plugin>
-
-            <!--Jacoco plugin, Egységtesztekhez-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.4</version>
+                <version>0.8.3</version>
             </plugin>
-
         </plugins>
     </reporting>
-
     <build>
         <plugins>
             <plugin>
@@ -142,7 +122,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -153,13 +132,11 @@
                     <target>11</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.7.1</version>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -175,8 +152,6 @@
                     <mainClass>Main</mainClass>
                 </configuration>
             </plugin>
-
-            <!--Apache Maven specifikus követelmények-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -211,8 +186,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- Enforcer plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -235,10 +208,7 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
-
-        <!-- Jeszy kódja-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
@@ -281,16 +251,12 @@
             <version>1.18.6</version>
             <scope>compile</scope>
         </dependency>
-
-        <!--Junit tesztek-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
-        <!--JavaFX Dependencies-->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
@@ -312,8 +278,6 @@
             <artifactId>javafx-graphics</artifactId>
             <version>11</version>
         </dependency>
-
-        <!-- Zenék metaadataihoz szükséges dependencyk-->
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
@@ -324,8 +288,6 @@
             <artifactId>tika-parsers</artifactId>
             <version>1.20</version>
         </dependency>
-
-        <!--Slf4j-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -339,11 +301,11 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>2.11.2</version>
-        <scope>runtime</scope>
-    </dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.11.2</version>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

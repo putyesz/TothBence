@@ -1,4 +1,4 @@
 /**
  * Package for controllers.
  */
-package Controller;
+package controller;

@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,34 +24,34 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Controller for Editing available locations.
+ * controller for Editing available locations.
  */
 public class EditController {
 
     /**
-     * Listview to show locations.
+     * ListView to show locations.
      */
-    public ListView <String> locationsList;
+    public ListView<String> locationsList;
     /**
      * Button to delete item from locations list.
      */
     public Button deleteButton;
 
     /**
-     * Initializer method to read locations.
+     * Initializer method to read <a href="file:../Locations.xml">/Locations.xml</a>.
      * Pass it to a ListView element.
      */
     @FXML
     private void initialize() {
         try {
-            File inputFile = new File("Locations.xml");
+            File inputFile = new File("src/main/resources/Locations.xml");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document document = db.parse(inputFile);
             document.getDocumentElement().normalize();
 
             NodeList nodeList = document.getElementsByTagName("location");
-            ObservableList <String> observableList = FXCollections.observableArrayList();
+            ObservableList<String> observableList = FXCollections.observableArrayList();
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Element element = (Element) nodeList.item(i);
@@ -74,19 +74,19 @@ public class EditController {
     }
 
     /**
-     * Delete method for delete button, to remove the selected location from the list.
+     * Delete method for {@link #deleteButton}, to remove the selected location from the Location list.
      */
     @FXML
     public void delete() {
         try {
-            File inputFile = new File("Locations.xml");
+            File inputFile = new File("src/main/resources/Locations.xml");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document document = db.parse(inputFile);
             document.getDocumentElement().normalize();
 
             NodeList nodeList = document.getElementsByTagName("location");
-            ObservableList <String> observableList = FXCollections.observableArrayList();
+            ObservableList<String> observableList = FXCollections.observableArrayList();
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Element element = (Element) nodeList.item(i);
@@ -94,8 +94,7 @@ public class EditController {
                     Node parent = element.getParentNode();
                     parent.removeChild(element);
                     i--;
-                }
-                else{
+                } else {
                     observableList.add(element.getAttribute("path"));
                 }
             }
@@ -105,7 +104,7 @@ public class EditController {
             Transformer transformer = tf.newTransformer();
             DOMSource source = new DOMSource(document);
 
-            StreamResult result = new StreamResult(new File("Locations.xml"));
+            StreamResult result = new StreamResult(new File("src/main/resources/Locations.xml"));
 
             transformer.transform(source, result);
             LoggerFactory.getLogger(EditController.class).info("Item deleted");

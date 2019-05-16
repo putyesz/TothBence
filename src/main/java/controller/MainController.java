@@ -1,11 +1,11 @@
-package Controller;
+package controller;
 
-import Model.MediaModel;
-import Model.Song;
-import View.AddPathWindow;
+import javafx.scene.control.*;
+import model.MediaModel;
+import model.Song;
+import view.AddPathWindow;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -39,14 +39,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import static java.lang.Math.abs;
-
 /**
- * MainWindow Controller.
+ * MainWindow controller.
  */
 public class MainController {
 
@@ -56,49 +52,49 @@ public class MainController {
     private static Logger logger = LoggerFactory.getLogger(MainController.class);
 
     /**
-     * Listview to show when Year tab is open.
+     * ListView to show when Year tab is open.
      */
     public ListView <String> yearList;
     /**
-     * Listview to show when Artist tab is open.
+     * ListView to show when Artist tab is open.
      */
     public ListView <String> artistList;
     /**
-     * Listview to show when Album tab is open.
+     * ListView to show when Album tab is open.
      */
     public ListView <String> albumList;
     /**
-     * Listview to show when Song tab is open.
+     * ListView to show when Song tab is open.
      */
     public ListView <String> songList;
     /**
-     * Listview to show when Genre tab is open.
+     * ListView to show when Genre tab is open.
      */
     public ListView <String> genreList;
     /**
-     * Listview for the actual playlist.
+     * ListView for the actual playlist.
      */
     public ListView <String> playlistList;
 
     /**
-     * Imageview for the play button.
+     * ImageView for the play button.
      */
     public ImageView playImageView;
     /**
-     * Imageview for the shuffle button.
+     * ImageView for the shuffle button.
      */
     public ImageView shuffleImageView;
     /**
-     * Imageview for the mute button.
+     * ImageView for the mute button.
      */
     public ImageView muteImageView;
     /**
-     * Imageview for the loop button.
+     * ImageView for the loop button.
      */
     public ImageView loopImageView;
 
     /**
-     * Button element for play and pause actions.
+     * Button for play and pause actions.
      */
     public Button playButton;
     /**
@@ -127,23 +123,23 @@ public class MainController {
     public Button loopButton;
 
     /**
-     * Button for the Year tab to search for song with the year from Choicebox in allSongList.
+     * Button for the {@link #tabPane} Year tab to search for song with the year from {@link #yearChoiceBox}.
      */
     public Button searchYearButton;
     /**
-     * Button for the Artist tab to search for songs with Artist from Textfield in allSongList.
+     * Button for a {@link #tabPane} Artist tab to search for song with artist from Textfield in {@link #allSongsList}.
      */
     public Button searchArtistButton;
     /**
-     * Button for the Album tab to search for songs from the Album in Textfield, in allSongList.
+     * Button for a {@link #tabPane} Album tab to search for song from the album in Textfield in {@link #allSongsList}.
      */
     public Button searchAlbumButton;
     /**
-     * Button for the Song tab to search for songs with Title in Textfield, in allSongList.
+     * Button for the {@link #tabPane} Song tab to search for song with title in Textfield in {@link #allSongsList}.
      */
     public Button searchSongButton;
     /**
-     * Button for the Genre tab to search for songs with the same genre from allSongList.
+     * Button for the {@link #tabPane} Genre tab to search for song from genre from {@link #allSongsList}.
      */
     public Button searchGenreButton;
 
@@ -187,17 +183,18 @@ public class MainController {
     public ChoiceBox <String> genreChoiceBox;
 
     /**
-     * Tabpane to group tabs.
+     * TabPane to group tabs.
      */
     public TabPane tabPane;
 
     /**
-     * HashMap with a string key which is the concatenation of the artist and the title of the song, and the value is the Song object itself.
+     * HashMap with a string key which is the concatenation of the artist and the title of the song.
+     * And the value is the Song object itself.
      */
     private HashMap <String, Song> songHashMap;
 
     /**
-     * An Array to collect all the available songs.
+     * ArrayList to collect all the available songs.
      */
     private ArrayList <Song> allSongsList;
 
@@ -207,29 +204,29 @@ public class MainController {
     private int index = 0;
 
     /**
-     * Variable to show the status of the playButton.
+     * Variable to show the status of the {@link #playButton}.
      */
     private boolean isPaused;
     /**
-     * Variable to show the status of the muteButton.
+     * Variable to show the status of the {@link #muteButton}.
      */
     private boolean isMuted;
     /**
-     * Variable to show the status of the shuffleButton.
+     * Variable to show the status of the {@link #shuffleButton}.
      */
     private boolean isOnShuffle;
     /**
-     * Variable to show the status of the loopButton.
+     * Variable to show the status of the {@link #loopButton}.
      */
     private boolean isLooped;
 
     /**
-     * Variable to store the previously set value of the volume slider.
+     * Variable to store the previously set value of the {@link #volumeSlider}.
      */
     private double volumeSliderValue;
 
     /**
-     * Timer for slider changes.
+     * Timer for {@link #playSlider} changes.
      */
     private Timer timer;
 
@@ -242,8 +239,10 @@ public class MainController {
     }
 
     /**
-     * Initializes boolean variables, ChoiceBox, HashMap and a timer for updating the slider for the media.
-     * Then invoces makeXMLFiles.
+     * Initializes {@link #isPaused}, {@link #isMuted}, {@link #isOnShuffle}, {@link #isLooped}, {@link #allSongsList}.
+     * {@link #yearChoiceBox}, {@link #genreChoiceBox}, {@link #songHashMap} and a timer for updating the
+     * {@link #playSlider} for the media.
+     * Then invoces {@link #makeXMLFiles()}.
      */
     private void init() {
         isPaused = false;
@@ -255,17 +254,12 @@ public class MainController {
         genreChoiceBox = new ChoiceBox <>();
         songHashMap = new HashMap <>();
 
-        try {
-            timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    updateSlider();
-                }
-                }, 0, 2000);
-        }finally {
-            timer.cancel();
-        }
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                updateSlider();
+            }}, 0, 1000);
 
         try {
             makeXMLFiles();
@@ -280,105 +274,10 @@ public class MainController {
     }
 
     /**
-     * Reading tha Locatios.xml file tag-by-tag, looking through all the subdirectories to find all the .mp3 files and store informations from the songs in allSongList and Songs.xml.
-     */
-    private void initSongs() {
-        try {
-            File inputFile = new File("Locations.xml");
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document document = db.parse(inputFile);
-            document.getDocumentElement().normalize();
-
-            NodeList nodeList = document.getElementsByTagName("location");
-
-            List <File> filesInFolder;
-
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Element element = (Element) nodeList.item(i);
-
-                filesInFolder = Files.walk(Paths.get(element.getAttribute("path")))
-                        .filter(name -> name.toString().toLowerCase().endsWith(".mp3"))
-                        .map(Path::toFile)
-                        .collect(Collectors.toList());
-
-                for (File file : filesInFolder) {
-                    if (new File(file.getAbsolutePath()).exists()) {
-                        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                        Document doc = documentBuilder.parse("Songs.xml");
-                        doc.getDocumentElement().normalize();
-
-                        Element root = doc.getDocumentElement();
-
-                        Element songElement = doc.createElement("song");
-                        root.appendChild(songElement);
-
-                        Element pathElement = doc.createElement("path");
-                        pathElement.appendChild(doc.createTextNode(file.getAbsolutePath().replace("\\", "/")));
-                        songElement.appendChild(pathElement);
-
-                        Element yearElement = doc.createElement("year");
-                        yearElement.appendChild(doc.createTextNode(getMetas(file.getAbsolutePath(), "year")));
-                        songElement.appendChild(yearElement);
-
-                        Element artistElement = doc.createElement("artist");
-                        artistElement.appendChild(doc.createTextNode(getMetas(file.getAbsolutePath(), "artist")));
-                        songElement.appendChild(artistElement);
-
-                        Element albumElement = doc.createElement("album");
-                        albumElement.appendChild(doc.createTextNode(getMetas(file.getAbsolutePath(), "album")));
-                        songElement.appendChild(albumElement);
-
-                        Element songTitleElement = doc.createElement("title");
-                        songTitleElement.appendChild(doc.createTextNode(getMetas(file.getAbsolutePath(), "title")));
-                        songElement.appendChild(songTitleElement);
-
-                        Element lengthElement = doc.createElement("length");
-                        lengthElement.appendChild(doc.createTextNode(getMetas(file.getAbsolutePath(), "length")));
-                        songElement.appendChild(lengthElement);
-
-                        Element genreElement = doc.createElement("genre");
-                        genreElement.appendChild(doc.createTextNode(getMetas(file.getAbsolutePath(), "genre")));
-                        songElement.appendChild(genreElement);
-
-                        TransformerFactory tf = TransformerFactory.newInstance();
-                        Transformer transformer = tf.newTransformer();
-                        DOMSource source = new DOMSource(doc);
-
-                        StreamResult result = new StreamResult(new File("Songs.xml"));
-
-                        transformer.transform(source, result);
-                    }
-                    Song s = new Song(file);
-                    allSongsList.add(s);
-                    songHashMap.put(s.getArtist() + " - " + s.getTitle(), s);
-                }
-                logger.info("Songs read");
-            }
-            logger.info("Location read" + nodeList);
-        } catch (IOException e) {
-            logger.error("IOException");
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            logger.error("ParserConfigurationException");
-            e.printStackTrace();
-        } catch (SAXException e) {
-            logger.error("SAXException");
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            logger.error("TransformerException");
-            e.printStackTrace();
-        } catch (TikaException e) {
-            logger.error("TikaException");
-            e.printStackTrace();
-        }
-        logger.info("Read done");
-    }
-
-    /**
-     * FXML file initialization for Lists to allow multiple selection.
-     * And for Choiceboxes to have values.
+     * <a href="file:../resources/MainWindow.fxml">/resources/MainWindow.fxml</a> initialization for {@link #yearList}.
+     * {@link #artistList}, {@link #albumList}, {@link #songList}, {@link #genreList} and {@link #playlistList}.
+     * To allow multiple selection.
+     * And for {@link #genreChoiceBox}, {@link #yearChoiceBox}to have values.
      */
     @FXML
     private void initialize() {
@@ -387,7 +286,6 @@ public class MainController {
         albumList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         songList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         genreList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        playlistList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         initChoiceBoxes();
         logger.info("Init Lists");
@@ -395,7 +293,8 @@ public class MainController {
 
     /**
      * Method for starting and pausing the play of media.
-     * First check if the playlist is empty, and if not, then check if there's any selected item in the playlist.
+     * First check if the playlist is empty.
+     * And if not, then check if there's any selected item in the {@link #playlistList}.
      * If not, the plays the first song in the list.
      * Else plays the selected song.
      */
@@ -415,7 +314,8 @@ public class MainController {
                 MediaModel.setMusic(songHashMap.get(playlistList.getItems().get(index)).getPath());
                 logger.info("First Song selected automatically");
             } else {
-                MediaModel.setMusic(songHashMap.get(playlistList.getSelectionModel().getSelectedItems().get(0)).getPath());
+                MediaModel.setMusic(songHashMap.get(playlistList.getSelectionModel()
+                        .getSelectedItems().get(0)).getPath());
                 logger.info("Manual selection");
             }
         } else {
@@ -446,13 +346,110 @@ public class MainController {
     }
 
     /**
+     * Reading tha <a href="file:resources/Locations.xml">/Locations.xml</a> file tag-by-tag.
+     * Looking through all the subdirectories to find all the .mp3 files and store informations from the song.
+     * In {@link #allSongsList} and <a href="file:resources/Songs.xml">/resources/Songs.xml</a>.
+     */
+    private void initSongs() {
+        try {
+            File inputFile = new File("src/main/resources/Locations.xml");
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document document = db.parse(inputFile);
+            document.getDocumentElement().normalize();
+
+            NodeList nodeList = document.getElementsByTagName("location");
+
+            List<File> filesInFolder;
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Element element = (Element) nodeList.item(i);
+
+                filesInFolder = Files.walk(Paths.get(element.getAttribute("path")))
+                        .filter(name -> name.toString().toLowerCase().endsWith(".mp3"))
+                        .map(Path::toFile)
+                        .collect(Collectors.toList());
+
+                for (File file : filesInFolder) {
+                    Song s = new Song(file);
+                    if (!songHashMap.containsKey(s.getArtist() + " - " + s.getTitle()) &&
+                            new File(file.getAbsolutePath()).exists()) {
+                        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                        Document doc = documentBuilder.parse("src/main/resources/Songs.xml");
+                        doc.getDocumentElement().normalize();
+
+                        Element root = doc.getDocumentElement();
+
+                        Element songElement = doc.createElement("song");
+                        root.appendChild(songElement);
+
+                        Element pathElement = doc.createElement("path");
+                        pathElement.appendChild(doc.createTextNode(s.getPath()));
+                        songElement.appendChild(pathElement);
+
+                        Element yearElement = doc.createElement("year");
+                        yearElement.appendChild(doc.createTextNode(s.getYear()));
+                        songElement.appendChild(yearElement);
+
+                        Element artistElement = doc.createElement("artist");
+                        artistElement.appendChild(doc.createTextNode(s.getArtist()));
+                        songElement.appendChild(artistElement);
+
+                        Element albumElement = doc.createElement("album");
+                        albumElement.appendChild(doc.createTextNode(s.getAlbum()));
+                        songElement.appendChild(albumElement);
+
+                        Element songTitleElement = doc.createElement("title");
+                        songTitleElement.appendChild(doc.createTextNode(s.getTitle()));
+                        songElement.appendChild(songTitleElement);
+
+                        Element lengthElement = doc.createElement("length");
+                        lengthElement.appendChild(doc.createTextNode(s.getLenghtInSecs()));
+                        songElement.appendChild(lengthElement);
+
+                        Element genreElement = doc.createElement("genre");
+                        genreElement.appendChild(doc.createTextNode(s.getGenre()));
+                        songElement.appendChild(genreElement);
+
+                        TransformerFactory tf = TransformerFactory.newInstance();
+                        Transformer transformer = tf.newTransformer();
+                        DOMSource source = new DOMSource(doc);
+
+                        StreamResult result = new StreamResult(new File("src/main/resources/Songs.xml"));
+
+                        transformer.transform(source, result);
+                        logger.info("Reading " + s.getArtist() + " - " + s.getTitle());
+                        songHashMap.put(s.getArtist() + " - " + s.getTitle(), s);
+                        allSongsList.add(s);
+                    }
+                }
+                logger.info("Directory done");
+            }
+            logger.info("Locations done");
+        } catch (IOException e) {
+            logger.error("IOException");
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            logger.error("ParserConfigurationException");
+            e.printStackTrace();
+        } catch (SAXException e) {
+            logger.error("SAXException");
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            logger.error("TransformerException");
+            e.printStackTrace();
+        }
+        logger.info("Read done");
+    }
+
+    /**
      * Stops the song.
      */
     @FXML
     private void stopSong() {
         MediaModel.stopSong();
         playSlider.setValue(0);
-        playImageChanger();
         logger.info("StopSong pressed");
     }
 
@@ -467,7 +464,7 @@ public class MainController {
     }
 
     /**
-     * Makes index random.
+     * Makes {@link #index} random.
      */
     @FXML
     private void shuffle() {
@@ -502,6 +499,7 @@ public class MainController {
 
     /**
      * Opens a new AddPath window.
+     *
      * @throws IOException if AddPath does not exists
      */
     @FXML
@@ -514,13 +512,14 @@ public class MainController {
      * Does not do it's job.
      */
     @FXML
-    private void Import() {
+    protected void importNewSongs() {
+        initSongs();
         initChoiceBoxes();
-        logger.info("Itt update kellene");
+        logger.info("SongList updated");
     }
 
     /**
-     * Sets items for yearList.
+     * Sets items for {@link #yearList}.
      */
     @FXML
     private void searchYear() {
@@ -532,7 +531,7 @@ public class MainController {
     }
 
     /**
-     * Sets items for artistList.
+     * Sets items for {@link #artistList}.
      */
     @FXML
     private void searchArtist() {
@@ -544,7 +543,7 @@ public class MainController {
     }
 
     /**
-     * Sets items for albumList.
+     * Sets items for {@link #albumList}.
      */
     @FXML
     private void searchAlbum() {
@@ -556,7 +555,7 @@ public class MainController {
     }
 
     /**
-     * Sets items for songList.
+     * Sets items for {@link #songList}.
      */
     @FXML
     private void searchSong() {
@@ -568,7 +567,7 @@ public class MainController {
     }
 
     /**
-     * Sets items for genreList.
+     * Sets items for {@link #genreList}.
      */
     @FXML
     private void searchGenre() {
@@ -580,7 +579,7 @@ public class MainController {
     }
 
     /**
-     * Adds items to playlistList.
+     * Adds items to {@link #playlistList}.
      */
     @FXML
     private void addToPlaylist() {
@@ -595,6 +594,8 @@ public class MainController {
                 playlistList.getItems().addAll(songList.getSelectionModel().getSelectedItems());
             case "Genre":
                 playlistList.getItems().addAll(genreList.getSelectionModel().getSelectedItems());
+            default:
+                break;
         }
         playlistList.refresh();
         logger.info("Items added to playlist");
@@ -610,7 +611,7 @@ public class MainController {
     }
 
     /**
-     * Seeking of a Slider.
+     * Seeking of a {@link #playSlider}.
      */
     @FXML
     public void playSliderEvent() {
@@ -619,15 +620,15 @@ public class MainController {
     }
 
     /**
-     * Initializes items in Choiceboxes.
+     * Initializes items in {@link #yearChoiceBox} and {@link #genreChoiceBox}.
      */
-    private void initChoiceBoxes(){
-        yearChoiceBox.setItems(FXCollections.observableArrayList(allSongsList.stream()
+    private void initChoiceBoxes() {
+        yearChoiceBox.getItems().setAll(FXCollections.observableArrayList(allSongsList.stream()
                 .map(Song::getYear)
                 .distinct()
                 .collect(Collectors.toList())));
         logger.info("Previous Song pressed");
-        genreChoiceBox.setItems(FXCollections.observableArrayList(allSongsList.stream()
+        genreChoiceBox.getItems().setAll(FXCollections.observableArrayList(allSongsList.stream()
                 .map(Song::getGenre)
                 .distinct()
                 .collect(Collectors.toList())));
@@ -637,58 +638,22 @@ public class MainController {
     /**
      * Update method to track progression of a song.
      */
-    private void updateSlider(){
-        if(MediaModel.isSet()){
+    private void updateSlider() {
+        if (MediaModel.isSet()) {
             playSlider.setValue(MediaModel.getSeek());
             logger.info("Media is playing, can seek");
         }
     }
 
     /**
-     * Gets the metadatas from a song.
-     * @param fileLocation path to song
-     * @param neededMeta what do you want?
-     * @return selected metadatas
-     * @throws IOException if file does not exists
-     * @throws TikaException parsing problem
-     * @throws SAXException parsing problem
-     */
-    private String getMetas(String fileLocation, String neededMeta) throws TikaException, SAXException, IOException {
-        InputStream input = new FileInputStream(new File(fileLocation));
-        ContentHandler handler = new DefaultHandler();
-        Metadata metadata = new Metadata();
-        Parser parser = new Mp3Parser();
-        ParseContext parseCtx = new ParseContext();
-        parser.parse(input, handler, metadata, parseCtx);
-        input.close();
-
-        switch (neededMeta) {
-            case "year":
-                return metadata.get("xmpDM:releaseDate");
-            case "artist":
-                return metadata.get("xmpDM:artist");
-            case "album":
-                return metadata.get("xmpDM:album");
-            case "length":
-                return metadata.get("xmpDM:duration");
-            case "title":
-                return metadata.get("title");
-            case "genre":
-                return metadata.get("xmpDM:genre");
-            default:
-                logger.error("Invalid metadata");
-                throw new IllegalArgumentException("Invalid metadata");
-        }
-
-    }
-
-    /**
-     * Creates xml document if does not exists.
+     * Creates <a href="file:resources/Songs.xml">/Songs.xml</a>,<a href="file:resources/Locations.xml">/Locations.xml</a> documents.
+     * If does not exists.
+     *
      * @throws ParserConfigurationException cannot parse from document
-     * @throws TransformerException cannot transform to document
+     * @throws TransformerException         cannot transform to document
      */
     private void makeXMLFiles() throws ParserConfigurationException, TransformerException {
-        if (!new File("Songs.xml").exists()) {
+        if (!new File("src/main/resources/Songs.xml").exists()) {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
@@ -700,14 +665,14 @@ public class MainController {
             Transformer transformer = tf.newTransformer();
             DOMSource source = new DOMSource(doc);
 
-            StreamResult result = new StreamResult(new File("Songs.xml"));
+            StreamResult result = new StreamResult(new File("src/main/resources/Songs.xml"));
 
             transformer.transform(source, result);
             logger.info("Songs.xml created");
         }
         //-------------------------------------------------------------
 
-        if (!new File("Locations.xml").exists()) {
+        if (!new File("src/main/resources/Locations.xml").exists()) {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
@@ -719,7 +684,7 @@ public class MainController {
             Transformer transformer = tf.newTransformer();
             DOMSource source = new DOMSource(doc);
 
-            StreamResult result = new StreamResult(new File("Locations.xml"));
+            StreamResult result = new StreamResult(new File("src/main/resources/Locations.xml"));
 
             transformer.transform(source, result);
             logger.info("Locations.xml created");
@@ -746,7 +711,7 @@ public class MainController {
     }
 
     /**
-     * Changes the image if playButton pressed.
+     * Changes the image if {@link #playButton} is pressed.
      */
     private void playImageChanger() {
         isPaused = !isPaused;
@@ -760,13 +725,13 @@ public class MainController {
     }
 
     /**
-     * Skips to the number index song.
+     * Skips to the number {@link #index} song in {@link #playlistList} .
      */
-    private void changeSong(){
-        if (isOnShuffle){
+    private void changeSong() {
+        if (isOnShuffle) {
             index = new Random().nextInt(playlistList.getItems().size());
         }
-        if(index < 0){
+        if (index < 0) {
             index = playlistList.getItems().size() - 1;
             logger.info("Negative index");
         }
@@ -778,11 +743,13 @@ public class MainController {
 
     /**
      * Starts song with doubleclick.
+     *
      * @param mouseEvent clicks
      */
-    public void DoubleClick(MouseEvent mouseEvent) {
+    public void doubleClick(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
             startMusic();
+            index = playlistList.getSelectionModel().getSelectedIndex();
             logger.info("DoubleClickStart");
         }
     }
@@ -800,6 +767,7 @@ public class MainController {
 
     /**
      * Sets the volume to the player.
+     *
      * @param d amount value
      */
     private void setVolume(double d) {
@@ -807,4 +775,8 @@ public class MainController {
         logger.info("Volume set");
     }
 
+    @Override
+    protected void finalize(){
+        timer.cancel();
+    }
 }

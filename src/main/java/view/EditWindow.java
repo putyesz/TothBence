@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,13 +8,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * View for Editing Paths.
+ * view for Editing Paths.
  */
-public class EditWindow{
+public class EditWindow {
 
     /**
      * Initializing window.
-     * @throws IOException if EditWindow does not exists
+     *
+     * @throws IOException if <a href="file:../resources/EditWindow.fxml">/EditWindow.fxml</a> does not exists
      */
     public EditWindow() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EditWindow.fxml"));

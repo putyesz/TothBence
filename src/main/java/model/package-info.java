@@ -1,4 +1,4 @@
 /**
  * Package for models.
  */
-package Model;
+package model;

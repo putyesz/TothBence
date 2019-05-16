@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,17 +9,18 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * View for MainWindow.
+ * view for MainWindow.
  */
 public class MyApplication extends Application {
 
     /**
-     * Initializing Mainwindow.
+     * Initializing Window.
+     *
      * @param primaryStage first Stage to show
-     * @throws IOException if MainWindow does not exists
+     * @throws IOException if <a href="file:../resources/MainWindow.fxml">/MainWindow.fxml</a> does not exists
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    final public void start(final Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/MainWindow.fxml"));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Music Player");

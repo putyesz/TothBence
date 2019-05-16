@@ -1,6 +1,7 @@
-package Controller;
+package controller;
 
-import View.EditWindow;
+import org.w3c.dom.NodeList;
+import view.EditWindow;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -24,12 +25,12 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Controller for AddPathWindow.
+ * controller for AddPathWindow.
  */
 public class AddPathController {
 
     /**
-     * Textfield for path.
+     * for path.
      */
     public TextField pathTextField;
 
@@ -55,27 +56,40 @@ public class AddPathController {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Directory");
         File selected = directoryChooser.showDialog(primaryStage);
-
-        pathTextField.setText(selected.getAbsolutePath());
-        LoggerFactory.getLogger(AddPathController.class).info("Browse pressed");
+        if (selected != null) {
+            pathTextField.setText(selected.getAbsolutePath());
+            LoggerFactory.getLogger(AddPathController.class).info("Browse done");
+        } else {
+            LoggerFactory.getLogger(AddPathController.class).info("no selected dir");
+        }
     }
 
     /**
      * Check if any path is defined in the TextField and then reading.
-     * The previously generated Locations from an xml database, and definining new location element in it.
+     * The previously generated locations from <a href="file:../Locations.xml">/Locations.xml</a> database, and definining new location element in it.
      * Also shows an Alert when the TextField is empty.
      */
     @FXML
-    public void addAction() {
+    final public void addAction() {
         try {
             if (!"".equals(pathTextField.getText())) {
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
-                Document document = documentBuilder.parse("Locations.xml");
+                Document document = documentBuilder.parse("src/main/resources/Locations.xml");
                 document.getDocumentElement().normalize();
 
                 Element root = document.getDocumentElement();
+                NodeList nodeList = document.getElementsByTagName("location");
 
+                if (nodeList.getLength() != 0){
+                    for (int i = 0; i < nodeList.getLength(); i++){
+                        Element element = (Element) nodeList.item(i);
+                        if (element.getAttribute("path").equals(pathTextField.getText())){
+                            LoggerFactory.getLogger(AddPathController.class).info("Already existing location");
+                            return;
+                        }
+                    }
+                }
                 Element newLocation = document.createElement("location");
                 newLocation.setAttribute("path", pathTextField.getText());
 
@@ -85,9 +99,10 @@ public class AddPathController {
                 Transformer transformer = tf.newTransformer();
                 DOMSource source = new DOMSource(document);
 
-                StreamResult result = new StreamResult(new File("Locations.xml"));
+                StreamResult result = new StreamResult(new File("src/main/resources/Locations.xml"));
 
                 transformer.transform(source, result);
+
                 LoggerFactory.getLogger(AddPathController.class).info("Location added");
             } else {
                 LoggerFactory.getLogger(AddPathController.class).warn("No selected directory");
@@ -95,6 +110,8 @@ public class AddPathController {
                 alert.setContentText("No directory selected");
                 alert.showAndWait();
             }
+
+
             LoggerFactory.getLogger(AddPathController.class).info("Add done");
 
         } catch (TransformerException e) {
@@ -113,11 +130,12 @@ public class AddPathController {
     }
 
     /**
-     * Opens a new Window to delete the existing location elements.
-     * @throws IOException if EditWindow.fxml does not exists
+     * Opens a new EditWindow  to delete the existing location elements.
+     *
+     * @throws IOException if <a href="file:../resources/EditWindow.fxml">/EditWindow.fxml</a> does not exists
      */
     @FXML
-    public void editAction() throws IOException {
+    final public void editAction() throws IOException {
         new EditWindow();
     }
 }

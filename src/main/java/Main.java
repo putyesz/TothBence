@@ -1,15 +1,14 @@
-import View.MyApplication;
 import javafx.application.Application;
-
-import static javafx.application.Application.launch;
+import view.MyApplication;
 
 /**
  * Main class.
  */
-public class Main{
+class Main {
 
     /**
-     * PSVM.
+     * Main class.
+     *
      * @param args basic args
      */
     public static void main(String[] args) {

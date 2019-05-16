@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -9,7 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Model for playing medias.
+ * model for playing medias.
  */
 public class MediaModel {
 
@@ -31,25 +31,24 @@ public class MediaModel {
     /**
      * Creating a media object from the song param's URI.
      * Plays the media object and sets isPlaying boolean to true.
-     * @param song file path
+     *
+     * @param song path to song
      */
-    public static void setMusic(String song){
+    public static void setMusic(final String song) {
 
         Media pick = null;
         try {
             pick = new Media("file:/" + new URI(song));
         } catch (URISyntaxException e) {
             LoggerFactory.getLogger(MediaModel.class).error("Invalid URI");
-            e.printStackTrace();
+            e.getStackTrace();
+            return;
         }
 
-        if(player != null)
+        if (player != null) {
             player.stop();
-
-        if (pick != null)
-            player = new MediaPlayer(pick);
-        else
-            return;
+        }
+        player = new MediaPlayer(pick);
 
         player.play();
 
@@ -60,61 +59,67 @@ public class MediaModel {
     /**
      * @return If a media is already been playing in the mediaplayer
      */
-	public static boolean isSet(){
-		return player != null;
-	}
+    public static boolean isSet() {
+        return player != null;
+    }
 
     /**
      * Invoces the mediaplayer's play method to start playing the music.
      */
-    public static void playSong(){
+    public static void playSong() {
         player.play();
     }
 
     /**
      * Method to change the state of play to pause and back, when Play/Pause button is pressed.
      */
-    public static void playPause(){
-        if(isPlaying) player.pause();
-        else player.play();
+    public static void playPause() {
+        if (isPlaying) {
+            player.pause();
+        } else {
+            player.play();
+        }
         isPlaying = !isPlaying;
     }
 
     /**
      * Invoces the mediaplayer's stop method to pause the song and restore it to the begining.
      */
-    public static void stopSong(){
+    public static void stopSong() {
         player.stop();
     }
 
     /**
      * Invoces the mediaplayer's setVolume method to adjust the volume.
+     *
      * @param n value to set
      */
-    public static void setVolume(double n){
+    public static void setVolume(final double n) {
         player.setVolume(n);
     }
 
     /**
      * Invoces the mediaplayer's seek method to adjust progression(time) in the media.
-     * @param d value to seek to
+     *
+     * @param d playSlider value
      */
-    public static void setSeek(double d){
+    public static void setSeek(final double d) {
         player.seek(new Duration(d * player.getMedia().getDuration().toMillis()));
     }
 
     /**
      * Method to show the progression(time) in the media file.
-     * @return seekvalue
+     *
+     * @return playSlider value
      */
-    public static double getSeek(){
+    public static double getSeek() {
         return player.getCurrentTime().toMillis() / player.getMedia().getDuration().toMillis();
     }
 
     /**
      * Invoce the mediaplayer's setMute method to mute and restore the output volume.
      */
-    public static void mute(){
+    public static void mute() {
         player.setMute(!muted);
         muted = !muted;
     }

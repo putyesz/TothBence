@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Model for song objets.
+ * model for song objets.
  */
 public class Song {
     /**
@@ -57,9 +57,10 @@ public class Song {
 
     /**
      * Constructor to define a Song object by getting the songs metadatas.
-     * @param file Getting informations from
+     *
+     * @param file {@link File}
      */
-    public Song(File file) {
+    public Song(final File file) {
         try {
             InputStream input = new FileInputStream(new File(file.getAbsolutePath()));
             ContentHandler handler = new DefaultHandler();
@@ -69,7 +70,10 @@ public class Song {
             parser.parse(input, handler, metadata, parseCtx);
             input.close();
 
-            this.setPath(file.getAbsolutePath().replace("\\", "/").replace(" ", "%20"));
+            this.setPath(file.getAbsolutePath().replace("\\", "/")
+                    .replace(" ", "%20")
+            .replace("[", "%5B")
+            .replace("]", "%5D"));
 
             if (metadata.get("xmpDM:artist") != null) {
                 this.setArtist(metadata.get("xmpDM:artist"));
@@ -116,113 +120,127 @@ public class Song {
 
     /**
      * Method for getting the absolute path to the song.
-     * @return path to song
+     *
+     * @return {@link #path}
      */
-    public String getPath() {
+    final public String getPath() {
         return path;
     }
 
     /**
      * Method for setting the absolute path to a song.
-     * @param path to song
+     *
+     * @param path {@link #path}
      */
-    private void setPath(String path) {
+    private void setPath(final String path) {
         this.path = path;
     }
 
     /**
      * Method for getting the performer of the song.
-     * @return artist of a song
+     *
+     * @return {@link #artist}
      */
-    public String getArtist() {
+    final public String getArtist() {
         return artist;
     }
 
     /**
      * Method for setting the performer for a song.
-     * @param artist of song
+     *
+     * @param artist {@link #artist}
      */
-    private void setArtist(String artist) {
+    private void setArtist(final String artist) {
         this.artist = artist;
     }
 
     /**
      * Method for getting the album containing the song.
-     * @return album of a song
+     *
+     * @return {@link #album}
      */
-    public String getAlbum() {
+    final public String getAlbum() {
         return album;
     }
 
     /**
      * Method for setting the album for a song.
-     * @param album of song
+     *
+     * @param album {@link #album}
      */
-    private void setAlbum(String album) {
+    private void setAlbum(final String album) {
         this.album = album;
     }
 
     /**
      * Method for getting the title of a song.
-     * @return title of a song
+     *
+     * @return {@link #title}
      */
-    public String getTitle() {
+    final public String getTitle() {
         return title;
     }
 
     /**
      * Method for setting the title for a song.
-     * @param title of a song
+     *
+     * @param title {@link #title}
      */
-    private void setTitle(String title) {
+    private void setTitle(final String title) {
         this.title = title;
     }
 
     /**
      * Method for getting the publication year of the song (album).
-     * @return release year
+     *
+     * @return {@link #year}
      */
-    public String getYear() {
+    final public String getYear() {
         return year;
     }
 
     /**
      * Method for setting the publication year for a song (album).
-     * @param year of release
+     *
+     * @param year {@link #year}
      */
-    private void setYear(String year) {
+    private void setYear(final String year) {
         this.year = year;
     }
 
     /**
      * Method for getting the duration of a song.
-     * @return lenght of a song
+     *
+     * @return {@link #lenghtInSecs}
      */
-    public String getLenghtInSecs() {
+    final public String getLenghtInSecs() {
         return lenghtInSecs;
     }
 
     /**
      * Method for setting a duration of a song.
-     * @param lenghtInSecs duration to set
+     *
+     * @param lenghtInSecs {@link #lenghtInSecs}
      */
-    private void setLenghtInSecs(String lenghtInSecs) {
+    private void setLenghtInSecs(final String lenghtInSecs) {
         this.lenghtInSecs = lenghtInSecs;
     }
 
     /**
      * Method for getting the genre of a song.
-     * @return genre of a song
+     *
+     * @return {@link #genre}
      */
-    public String getGenre() {
+    final public String getGenre() {
         return genre;
     }
 
     /**
      * Method for setting the genre of a song.
-     * @param genre of a song
+     *
+     * @param genre {@link #genre}
      */
-    private void setGenre(String genre) {
+    private void setGenre(final String genre) {
         this.genre = genre;
     }
 }
