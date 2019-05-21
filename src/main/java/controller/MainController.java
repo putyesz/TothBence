@@ -1,5 +1,8 @@
 package controller;
 
+import exception.PlayerNotInitializedException;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import model.MediaModel;
 import model.Song;
@@ -9,19 +12,12 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.parser.mp3.Mp3Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,9 +28,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -155,7 +149,7 @@ public class MainController {
     /**
      * Menuitem for manual importation.
      */
-    public MenuItem importMenuitem;
+    public MenuItem updateMenuItem;
     /**
      * Menuitem to open a Window to add and delete directory paths.
      */
@@ -188,15 +182,64 @@ public class MainController {
     public TabPane tabPane;
 
     /**
+     * Counts song on tab.
+     */
+    public Label yearTabSongCounter;
+    /**
+     * Sums playtime on tab.
+     */
+    public Label yearTabTime;
+    /**
+     * Counts song on tab.
+     */
+    public Label artistTabSongCounter;
+    /**
+     * Sums playtime on tab.
+     */
+    public Label artistTabTime;
+    /**
+     * Counts song on tab.
+     */
+    public Label albumTabSongCounter;
+    /**
+     * Sums playtime on tab.
+     */
+    public Label albumTabTime;
+    /**
+     * Counts song on tab.
+     */
+    public Label songTabSongCounter;
+    /**
+     * Sums playtime on tab.
+     */
+    public Label songTabTime;
+    /**
+     * Counts song on tab.
+     */
+    public Label genreTabSongCounter;
+    /**
+     * Sums playtime on tab.
+     */
+    public Label genreTabTime;
+    /**
+     * Counts song on tab.
+     */
+    public Label playlistSongCounter;
+    /**
+     * Sums playtime on tab.
+     */
+    public Label playlistTime;
+
+    /**
      * HashMap with a string key which is the concatenation of the artist and the title of the song.
      * And the value is the Song object itself.
      */
-    private HashMap <String, Song> songHashMap;
+    protected HashMap <String, Song> songHashMap;
 
     /**
      * ArrayList to collect all the available songs.
      */
-    private ArrayList <Song> allSongsList;
+    protected ArrayList <Song> allSongsList;
 
     /**
      * An integer value to store the position, where we are in the playlist.
@@ -239,27 +282,25 @@ public class MainController {
     }
 
     /**
-     * Initializes {@link #isPaused}, {@link #isMuted}, {@link #isOnShuffle}, {@link #isLooped}, {@link #allSongsList}.
-     * {@link #yearChoiceBox}, {@link #genreChoiceBox}, {@link #songHashMap} and a timer for updating the
+     * Initializes {@link #isPaused}, {@link #isMuted}, {@link #isOnShuffle},
+     * {@link #isLooped}, {@link #allSongsList},
+     * {@link #songHashMap} and a timer for updating the
      * {@link #playSlider} for the media.
-     * Then invoces {@link #makeXMLFiles()}.
+     * Then invokes {@link #makeXMLFiles()}.
      */
     private void init() {
         isPaused = false;
         isMuted = false;
         isOnShuffle = false;
         isLooped = false;
-        allSongsList = new ArrayList <>();
-        yearChoiceBox = new ChoiceBox <>();
-        genreChoiceBox = new ChoiceBox <>();
-        songHashMap = new HashMap <>();
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 updateSlider();
-            }}, 0, 1000);
+            }
+        }, 0, 1000);
 
         try {
             makeXMLFiles();
@@ -274,7 +315,7 @@ public class MainController {
     }
 
     /**
-     * <a href="file:../resources/MainWindow.fxml">/resources/MainWindow.fxml</a> initialization for {@link #yearList}.
+     * <a href="file:src/main/resources/MainWindow.fxml">MainWindow.fxml</a> initialization for {@link #yearList}.
      * {@link #artistList}, {@link #albumList}, {@link #songList}, {@link #genreList} and {@link #playlistList}.
      * To allow multiple selection.
      * And for {@link #genreChoiceBox}, {@link #yearChoiceBox}to have values.
@@ -309,7 +350,7 @@ public class MainController {
         }
 
         if (!MediaModel.isSet()) {
-            logger.warn("Already playing song");
+            logger.warn("Not playing song");
             if (playlistList.getSelectionModel().getSelectedItems().isEmpty()) {
                 MediaModel.setMusic(songHashMap.get(playlistList.getItems().get(index)).getPath());
                 logger.info("First Song selected automatically");
@@ -319,8 +360,12 @@ public class MainController {
                 logger.info("Manual selection");
             }
         } else {
-            MediaModel.playPause();
-            logger.info("Song started");
+            try {
+                MediaModel.playPause();
+                logger.info("Song started");
+            } catch (PlayerNotInitializedException e) {
+                e.printStackTrace();
+            }
         }
         playImageChanger();
     }
@@ -346,11 +391,13 @@ public class MainController {
     }
 
     /**
-     * Reading tha <a href="file:resources/Locations.xml">/Locations.xml</a> file tag-by-tag.
+     * Reading tha <a href="file:../../../../src/main/resources/Locations.xml">Locations.xml</a> file tag-by-tag.
      * Looking through all the subdirectories to find all the .mp3 files and store informations from the song.
-     * In {@link #allSongsList} and <a href="file:resources/Songs.xml">/resources/Songs.xml</a>.
+     * In {@link #allSongsList} and <a href="file:../../../../src/main/resources/Songs.xml">Songs.xml</a>.
      */
     private void initSongs() {
+        allSongsList = new ArrayList <>();
+        songHashMap = new HashMap <>();
         try {
             File inputFile = new File("src/main/resources/Locations.xml");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -360,7 +407,7 @@ public class MainController {
 
             NodeList nodeList = document.getElementsByTagName("location");
 
-            List<File> filesInFolder;
+            List <File> filesInFolder;
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Element element = (Element) nodeList.item(i);
@@ -372,8 +419,8 @@ public class MainController {
 
                 for (File file : filesInFolder) {
                     Song s = new Song(file);
-                    if (!songHashMap.containsKey(s.getArtist() + " - " + s.getTitle()) &&
-                            new File(file.getAbsolutePath()).exists()) {
+                    if (!songHashMap.containsKey(s.getArtist() + " - " + s.getTitle())
+                            && new File(file.getAbsolutePath()).exists()) {
                         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                         Document doc = documentBuilder.parse("src/main/resources/Songs.xml");
@@ -458,9 +505,14 @@ public class MainController {
      */
     @FXML
     private void muteUnmute() {
-        muteImageChanger();
-        MediaModel.mute();
-        logger.info("Mute pressed");
+        try {
+            MediaModel.mute();
+            muteImageChanger();
+            logger.info("Mute pressed");
+        } catch (PlayerNotInitializedException e) {
+            logger.error("Player not initialized");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -509,10 +561,10 @@ public class MainController {
     }
 
     /**
-     * Does not do it's job.
+     * Newly added places will be read.
      */
     @FXML
-    protected void importNewSongs() {
+    protected void updateSongs() {
         initSongs();
         initChoiceBoxes();
         logger.info("SongList updated");
@@ -527,6 +579,9 @@ public class MainController {
                 .filter(song -> song.getYear().equals(yearChoiceBox.getValue()))
                 .map(song -> song.getArtist() + " - " + song.getTitle())
                 .collect(Collectors.toList())));
+        yearTabSongCounter.setText(getSongCount(yearList.getItems()));
+        yearTabTime.setText(getTime(yearList.getItems()));
+        tabPane.getSelectionModel().getSelectedItem();
         logger.info("YearList updated");
     }
 
@@ -539,6 +594,8 @@ public class MainController {
                 .filter(song -> song.getArtist().toLowerCase().contains(artistTextField.getText().toLowerCase()))
                 .map(song -> song.getArtist() + " - " + song.getTitle())
                 .collect(Collectors.toList())));
+        artistTabSongCounter.setText(getSongCount(artistList.getItems()));
+        artistTabTime.setText(getTime(artistList.getItems()));
         logger.info("ArtistList updated");
     }
 
@@ -548,9 +605,11 @@ public class MainController {
     @FXML
     private void searchAlbum() {
         albumList.setItems(FXCollections.observableArrayList(allSongsList.stream()
-                .filter(song -> song.getAlbum().toLowerCase().contains(artistTextField.getText().toLowerCase()))
+                .filter(song -> song.getAlbum().toLowerCase().contains(albumTextField.getText().toLowerCase()))
                 .map(song -> song.getArtist() + " - " + song.getTitle())
                 .collect(Collectors.toList())));
+        albumTabSongCounter.setText(getSongCount(albumList.getItems()));
+        albumTabTime.setText(getTime(albumList.getItems()));
         logger.info("AlbumList updated");
     }
 
@@ -560,9 +619,11 @@ public class MainController {
     @FXML
     private void searchSong() {
         songList.setItems(FXCollections.observableArrayList(allSongsList.stream()
-                .filter(song -> song.getTitle().toLowerCase().contains(artistTextField.getText().toLowerCase()))
+                .filter(song -> song.getTitle().toLowerCase().contains(songTextField.getText().toLowerCase()))
                 .map(song -> song.getArtist() + " - " + song.getTitle())
                 .collect(Collectors.toList())));
+        songTabSongCounter.setText(getSongCount(songList.getItems()));
+        songTabTime.setText(getTime(songList.getItems()));
         logger.info("SongList updated");
     }
 
@@ -575,6 +636,8 @@ public class MainController {
                 .filter(song -> song.getGenre().equals(genreChoiceBox.getValue()))
                 .map(song -> song.getArtist() + " - " + song.getTitle())
                 .collect(Collectors.toList())));
+        genreTabSongCounter.setText(getSongCount(genreList.getItems()));
+        genreTabTime.setText(getTime(genreList.getItems()));
         logger.info("GenreList updated");
     }
 
@@ -597,6 +660,8 @@ public class MainController {
             default:
                 break;
         }
+        playlistSongCounter.setText(getSongCount(playlistList.getItems()));
+        playlistTime.setText(getTime(playlistList.getItems()));
         playlistList.refresh();
         logger.info("Items added to playlist");
     }
@@ -646,7 +711,7 @@ public class MainController {
     }
 
     /**
-     * Creates <a href="file:resources/Songs.xml">/Songs.xml</a>,<a href="file:resources/Locations.xml">/Locations.xml</a> documents.
+     * Creates <a href="file:../../../../src/main/resources/Songs.xml">Songs.xml</a>,<a href="file:../../../../src/main/resources/Locations.xml">Locations.xml</a> documents.
      * If does not exists.
      *
      * @throws ParserConfigurationException cannot parse from document
@@ -775,8 +840,35 @@ public class MainController {
         logger.info("Volume set");
     }
 
+    public String getSongCount(ObservableList <String> list) {
+        if (list != null) {
+            return list.size() + " songs";
+        } else {
+            return "0 song";
+        }
+    }
+
+    public String getTime(ObservableList <String> list) {
+        double time = 0;
+        int hours = 0, mins = 0, secs = 0;
+        if (list != null) {
+            for (String s : list) {
+                time += Double.parseDouble(songHashMap.get(s).getLenghtInSecs());
+            }
+            hours = (int) time / 3600;
+            secs = (int) time - hours * 3600;
+            mins = secs / 60;
+            secs = secs - mins * 60;
+        }
+        return String.format("%02d:%02d:%02d", hours, mins, secs);
+    }
+
+    /**
+     * Cancel timer when the window is closed.
+     */
     @Override
-    protected void finalize(){
+    @Deprecated
+    protected void finalize() {
         timer.cancel();
     }
 }

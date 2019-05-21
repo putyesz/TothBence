@@ -30,7 +30,7 @@ import java.io.IOException;
 public class AddPathController {
 
     /**
-     * for path.
+     * TextField for path.
      */
     public TextField pathTextField;
 
@@ -66,7 +66,7 @@ public class AddPathController {
 
     /**
      * Check if any path is defined in the TextField and then reading.
-     * The previously generated locations from <a href="file:../Locations.xml">/Locations.xml</a> database, and definining new location element in it.
+     * The previously generated locations from <a href="file:../../../../src/main/resources/Locations.xml">Locations.xml</a> database, and define new location element in it.
      * Also shows an Alert when the TextField is empty.
      */
     @FXML
@@ -81,14 +81,10 @@ public class AddPathController {
                 Element root = document.getDocumentElement();
                 NodeList nodeList = document.getElementsByTagName("location");
 
-                if (nodeList.getLength() != 0){
-                    for (int i = 0; i < nodeList.getLength(); i++){
-                        Element element = (Element) nodeList.item(i);
-                        if (element.getAttribute("path").equals(pathTextField.getText())){
-                            LoggerFactory.getLogger(AddPathController.class).info("Already existing location");
-                            return;
-                        }
-                    }
+
+                if (nodeList.getLength() != 0
+                        || alreadyInList(nodeList, pathTextField.getText())){
+                    return;
                 }
                 Element newLocation = document.createElement("location");
                 newLocation.setAttribute("path", pathTextField.getText());
@@ -110,8 +106,6 @@ public class AddPathController {
                 alert.setContentText("No directory selected");
                 alert.showAndWait();
             }
-
-
             LoggerFactory.getLogger(AddPathController.class).info("Add done");
 
         } catch (TransformerException e) {
@@ -129,10 +123,21 @@ public class AddPathController {
         }
     }
 
+    private boolean alreadyInList(NodeList nodeList, String text) {
+        for (int i = 0; i < nodeList.getLength(); i++){
+            Element element = (Element) nodeList.item(i);
+            if (element.getAttribute("path").equals(pathTextField.getText())){
+                LoggerFactory.getLogger(AddPathController.class).info("Already existing location");
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Opens a new EditWindow  to delete the existing location elements.
      *
-     * @throws IOException if <a href="file:../resources/EditWindow.fxml">/EditWindow.fxml</a> does not exists
+     * @throws IOException if <a href="file:src/main/resources/EditWindow.fxml">EditWindow.fxml</a> does not exists
      */
     @FXML
     final public void editAction() throws IOException {

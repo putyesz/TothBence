@@ -17,7 +17,7 @@ public class MyApplication extends Application {
      * Initializing Window.
      *
      * @param primaryStage first Stage to show
-     * @throws IOException if <a href="file:../resources/MainWindow.fxml">/MainWindow.fxml</a> does not exists
+     * @throws IOException if <a href="file:../../../../src/main/resources/MainWindow.fxml">MainWindow.fxml</a> does not exists
      */
     @Override
     final public void start(final Stage primaryStage) throws IOException {

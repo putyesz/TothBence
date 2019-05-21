@@ -15,7 +15,7 @@ public class AddPathWindow {
     /**
      * Initializing window.
      *
-     * @throws IOException if <a href="file:../resources/AddPathWindow.fxml">/AddPathWindow.fxml</a> does not exists
+     * @throws IOException if <a href="file:../../../../src/main/resources/AddPathWindow.fxml">AddPathWindow.fxml</a> does not exists
      */
     public AddPathWindow() throws IOException {
         FXMLLoader fl = new FXMLLoader(getClass().getResource("/AddPathWindow.fxml"));

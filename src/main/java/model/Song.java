@@ -56,6 +56,55 @@ public class Song {
     private String genre;
 
     /**
+     * Constructor for manual song initialization.
+     * @param path path to file.
+     * @param artist artist of the song.
+     * @param album album of the song.
+     * @param title title of the song.
+     * @param year release year.
+     * @param lenghtInSecs duration of the song.
+     * @param genre genre of the song.
+     */
+    public Song(String path, String artist, String album, String title, String year, String lenghtInSecs, String genre) {
+        setPath(path.replace("\\", "/")
+                .replace(" ", "%20")
+                .replace("[", "%5B")
+                .replace("]", "%5D"));
+
+        if (artist != null) {
+            this.setArtist(artist);
+        } else {
+            this.setArtist("Unknown");
+        }
+
+        if (album != null) {
+            this.setAlbum(album);
+        } else {
+            this.setAlbum("Unknown");
+        }
+
+        if (title != null) {
+            this.setTitle(title);
+        } else {
+            this.setTitle(artist + " - " + title + " from " + album + " released in: " + year);
+        }
+
+        if (year != null) {
+            this.setYear(year);
+        } else {
+            this.setYear("Unknown");
+        }
+
+        this.setLenghtInSecs(Double.toString(Double.parseDouble(lenghtInSecs) / 1000));
+
+        if (genre != null) {
+            this.setGenre(genre);
+        } else {
+            this.setGenre("Unknown");
+        }
+    }
+
+    /**
      * Constructor to define a Song object by getting the songs metadatas.
      *
      * @param file {@link File}
@@ -75,33 +124,33 @@ public class Song {
             .replace("[", "%5B")
             .replace("]", "%5D"));
 
-            if (metadata.get("xmpDM:artist") != null) {
+            if (metadata.get("xmpDM:artist") != null && !metadata.get("xmpDM:artist").isBlank()) {
                 this.setArtist(metadata.get("xmpDM:artist"));
             } else {
                 this.setArtist("Unknown");
             }
 
-            if (metadata.get("xmpDM:album") != null) {
+            if (metadata.get("xmpDM:album") != null && !metadata.get("xmpDM:album").isBlank()) {
                 this.setAlbum(metadata.get("xmpDM:album"));
             } else {
                 this.setAlbum("Unknown");
             }
 
-            if (metadata.get("title") != null) {
+            if (metadata.get("title") != null && !metadata.get("title").isBlank()) {
                 this.setTitle(metadata.get("title"));
             } else {
                 this.setTitle(file.getName());
             }
 
-            if (metadata.get("xmpDM:releaseDate") != null) {
+            if (metadata.get("xmpDM:releaseDate") != null && !metadata.get("xmpDM:releaseDate").isBlank()) {
                 this.setYear(metadata.get("xmpDM:releaseDate"));
             } else {
                 this.setYear("Unknown");
             }
 
-            this.setLenghtInSecs(metadata.get("xmpDM:duration"));
+            this.setLenghtInSecs(Double.toString(Double.parseDouble(metadata.get("xmpDM:duration")) / 1000));
 
-            if (metadata.get("xmpDM:genre") != null) {
+            if (metadata.get("xmpDM:genre") != null && !metadata.get("xmpDM:genre").isBlank()) {
                 this.setGenre(metadata.get("xmpDM:genre"));
             } else {
                 this.setGenre("Unknown");

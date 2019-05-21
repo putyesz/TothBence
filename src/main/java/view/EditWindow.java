@@ -15,7 +15,7 @@ public class EditWindow {
     /**
      * Initializing window.
      *
-     * @throws IOException if <a href="file:../resources/EditWindow.fxml">/EditWindow.fxml</a> does not exists
+     * @throws IOException if <a href="file:../../../../src/main/resources/EditWindow.fxml">    EditWindow.fxml</a> does not exists
      */
     public EditWindow() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EditWindow.fxml"));

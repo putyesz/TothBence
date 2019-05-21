@@ -38,7 +38,7 @@ public class EditController {
     public Button deleteButton;
 
     /**
-     * Initializer method to read <a href="file:../Locations.xml">/Locations.xml</a>.
+     * Initializer method to read <a href="file:../../../../src/main/resources/Locations.xml">Locations.xml</a>.
      * Pass it to a ListView element.
      */
     @FXML
@@ -90,7 +90,8 @@ public class EditController {
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Element element = (Element) nodeList.item(i);
-                if (element.getAttribute("path").equals(locationsList.getSelectionModel().getSelectedItem())) {
+                if (element.getAttribute("path")
+                        .equals(locationsList.getSelectionModel().getSelectedItem())) {
                     Node parent = element.getParentNode();
                     parent.removeChild(element);
                     i--;

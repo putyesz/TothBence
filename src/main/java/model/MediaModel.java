@@ -1,8 +1,10 @@
 package model;
 
+import exception.PlayerNotInitializedException;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
@@ -73,7 +75,10 @@ public class MediaModel {
     /**
      * Method to change the state of play to pause and back, when Play/Pause button is pressed.
      */
-    public static void playPause() {
+    public static void playPause() throws PlayerNotInitializedException {
+            if(player == null){
+                throw  new PlayerNotInitializedException("Player not initialized");
+            }
         if (isPlaying) {
             player.pause();
         } else {
@@ -119,8 +124,24 @@ public class MediaModel {
     /**
      * Invoce the mediaplayer's setMute method to mute and restore the output volume.
      */
-    public static void mute() {
+    public static boolean mute() throws PlayerNotInitializedException {
+        if(player == null){
+            throw  new PlayerNotInitializedException("Player not initialized");
+        }
         player.setMute(!muted);
-        muted = !muted;
+        return muted = !muted;
+    }
+
+
+    public static MediaPlayer getPlayer() {
+        return player;
+    }
+
+    public static boolean isMuted() {
+        return muted;
+    }
+
+    public static boolean isIsPlaying() {
+        return isPlaying;
     }
 }
