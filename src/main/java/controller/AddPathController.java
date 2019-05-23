@@ -81,9 +81,8 @@ public class AddPathController {
                 Element root = document.getDocumentElement();
                 NodeList nodeList = document.getElementsByTagName("location");
 
-
                 if (nodeList.getLength() != 0
-                        || alreadyInList(nodeList, pathTextField.getText())){
+                        && alreadyInList(nodeList, pathTextField.getText())){
                     return;
                 }
                 Element newLocation = document.createElement("location");
@@ -126,7 +125,7 @@ public class AddPathController {
     private boolean alreadyInList(NodeList nodeList, String text) {
         for (int i = 0; i < nodeList.getLength(); i++){
             Element element = (Element) nodeList.item(i);
-            if (element.getAttribute("path").equals(pathTextField.getText())){
+            if (element.getAttribute("path").equals(text)){
                 LoggerFactory.getLogger(AddPathController.class).info("Already existing location");
                 return true;
             }
